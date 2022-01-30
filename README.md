@@ -108,11 +108,21 @@ Form details are stated in English.
 
 
 ## Class Diagram  
-![Class Diagram](https://user-images.githubusercontent.com/94126853/151708424-28533245-f91e-498e-a2d3-9ce322394e6f.png)  
+![Class Diagram](https://user-images.githubusercontent.com/17710991/151714468-b71397f1-5752-4b95-b787-8d63b41878d9.png)
  
 ## Class Diagram Description  
-Vakho - Provide Description here  
- 
+**MainActivity:** The first screen the user sees. User will be able to view the map, defaulted to his current location, and the pins on that map; Each pin denoting an incident. Upon clicking the pin, user will see the details of that incident.
+
+**RetrofitClientInstance:** Bootstrap class required for Retrofit.
+
+**Incident:** Noun class that represents a single incident
+
+**State:** Noun class that represents a state
+
+**IIncidentDAO:** Interface for Retrofit to find and parse Incident JSON
+
+**IIncidentService:** Service (business logic class) for Incident
+  
 ## Scrum Roles, and who will fill those roles  
 •	Devops/Product Owner/Scrum Master: Vakho Akobia  
 •	Frontend Developer: Jacob Macleod  
