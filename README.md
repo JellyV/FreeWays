@@ -8,7 +8,7 @@ Vakho Akobia, Brennan Hand, Jacob Macleod
 
 ## Introduction  
 
-Freeways is an incident tracking app which lets you track recent incidents in the nearby area, so that you can plan your route safely. It also lets you report your own incidents and help others stay safe as well.  
+Freeways is an incident tracking app which lets you track recent incidents in the nearby area, so that you can plan your route safely. It lets you report your own incidents and help others stay safe.  
 
 ## Storyboard  
 ![App Storyboard](https://user-images.githubusercontent.com/94126853/151708250-31d2bf23-7c66-4fa0-9aa2-68472510323b.png)  
@@ -35,11 +35,11 @@ At least a few incidents have occurred in a nearby area recently.
 
 1.1  
 
-**Given** Incident API Endpoint is available, and there are recent incidents nearby  
+**Given** Incident API Endpoint is available, and the details for the incident are retrieved. 
 
-**When** I open the app  
+**When** I open the app, and select the pin.
 
-**Then** I should see the pins on the map, each denoting a separate incident, with the following attributes:  
+**Then** I should see the details pulled from the database for the incident and the following attributes:
 
 Location - Longitude and Latitude determine where the pin will show up on the map.  
 
@@ -61,7 +61,7 @@ Details - Short Description of the incident, which will be shown in a popup afte
 
 #### Scenario:  
 
-The authorized user will create a report and provide details like location, description of the incident, and severity.  
+As an authorized User, I want to create a report and provide details such as: location, description of the incident, and severity. So that we can view the details and submit the report to the app’s database.
 
 #### Dependencies:  
 
@@ -102,16 +102,16 @@ Form details are stated in English.
 
 **Given** GPS details are available  
 
-**When:** I do not provide enough data or any data into the form  
+**When:** I do not provide the corresponding details like, location, description of incident, and severity. 
 
-**Then:** I should receive an error notification to please fill out the data correctly  
+**Then:** I should receive an error notification to please provide the details above correctly.
 
 
 ## Class Diagram  
 ![Class Diagram](https://user-images.githubusercontent.com/17710991/151714468-b71397f1-5752-4b95-b787-8d63b41878d9.png)
  
 ## Class Diagram Description  
-**MainActivity:** The first screen the user sees. User will be able to view the map, defaulted to his current location, and the pins on that map; Each pin denoting an incident. Upon clicking the pin, user will see the details of that incident.
+**MainActivity:** The first screen the user sees. The user will be able to view the map, defaulted to his current location, and the pins on that map; Each pin denoting an incident. Upon clicking the pin, the user will see the details of that incident.
 
 **RetrofitClientInstance:** Bootstrap class required for Retrofit.
 
