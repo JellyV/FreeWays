@@ -108,7 +108,7 @@ Form details are stated in English.
 
 
 ## Class Diagram  
-![class_diagram](https://user-images.githubusercontent.com/17710991/154614266-f5bcef65-b2e5-4c46-b75a-98da5b8d5ced.png)
+![class_diagram](https://user-images.githubusercontent.com/17710991/154614424-bc301f3c-ccbe-4da5-9a69-52f6d4193190.png)
 
  
 ## Class Diagram Description  
