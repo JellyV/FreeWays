@@ -108,7 +108,8 @@ Form details are stated in English.
 
 
 ## Class Diagram  
-![Class Diagram](https://user-images.githubusercontent.com/17710991/151714468-b71397f1-5752-4b95-b787-8d63b41878d9.png)
+![class_diagram](https://user-images.githubusercontent.com/17710991/154614171-b69b053c-4af7-4f55-9c05-0686fc6f2e17.png)
+
  
 ## Class Diagram Description  
 **MainActivity:** The first screen the user sees. The user will be able to view the map, defaulted to his current location, and the pins on that map; Each pin denoting an incident. Upon clicking the pin, the user will see the details of that incident.
