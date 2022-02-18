@@ -33,7 +33,16 @@ At least a few incidents have occurred in a nearby area recently.
 
 #### Examples  
 
-1.1  
+
+1.1
+
+**Given** Incident API Endpoint is available, it is year 2019, and I am currently in State 40, County 1
+
+**When** I open the app
+
+**Then** I should get several incidents, and one of them should have a caseId of 400434
+
+1.2 
 
 **Given** Incident API Endpoint is available, and the details for the incident are retrieved. 
 
@@ -48,7 +57,7 @@ Severity - How severe the accident was is based on how many people were injured 
 Details - Short Description of the incident, which will be shown in a popup after clicking a specific pin.  
 
 
-1.2  
+1.3  
 
 **Given** Incident API Endpoint is available, and there no incidents nearby  
 
