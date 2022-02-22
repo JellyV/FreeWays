@@ -2,6 +2,7 @@ package com.ucmobiledevelopment.freeways
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.ucmobiledevelopment.freeways.dto.Incident
+import com.ucmobiledevelopment.freeways.service.IncidentService
 import junit.framework.Assert.*
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
