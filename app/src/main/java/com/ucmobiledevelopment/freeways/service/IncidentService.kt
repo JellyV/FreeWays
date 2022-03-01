@@ -17,7 +17,7 @@ class IncidentService {
     suspend fun fetchIncidents(fromCaseYear: Int, toCaseYear: Int, state: Int, county: Int) : List<Incident>? {
        return withContext(Dispatchers.IO) {
 
-           var incidentList: List<Incident> = ArrayList<Incident>()
+           var incidentList: MutableList<Incident> = mutableListOf()
 
            val service = RetrofitClientInstance.retrofitInstance?.create(IIncidentDAO::class.java)
            val incidentListDTO =
@@ -41,7 +41,8 @@ class IncidentService {
                         newIncident.way2 = it.TWAY_ID2
                         newIncident.vehiclesInvolved = it.TOTALVEHICLES.toInt()
 
-                        incidentList.toMutableList().add(newIncident)
+                        //incidentList.toMutableList().add(newIncident)
+                        incidentList.add(newIncident)
 
                     }
                }

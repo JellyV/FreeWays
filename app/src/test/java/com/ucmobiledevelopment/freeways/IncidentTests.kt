@@ -35,20 +35,21 @@ class IncidentTests {
 
     private suspend fun WhenIncidentDataAreReadAndParsed() {
         var x = "blabla"
-        allIncidents = incidentService.fetchIncidents(2019, 2020, 33, 1)
+        allIncidents = incidentService.fetchIncidents(2019, 2020, 40, 1)
         var y = "blabla"
     }
 
     private fun ThenTheIncidentCollectionShouldContainIncidentWithCaseId400434() {
-//        assertNotNull(allIncidents)
-//        assertTrue(1 == 1)
-//        assertTrue(allIncidents!!.isNotEmpty())
-//       var hasCaseId400434 = false
- //       allIncidents!!.forEach {//         if(it.caseId.equals("400434")){
- //               hasCaseId400434 = true
- //           }
- //       }
- //       assertTrue(hasCaseId400434)
+        assertNotNull(allIncidents)
+        assertTrue(1 == 1)
+        assertTrue(allIncidents!!.isNotEmpty())
+       var hasCaseId400434 = false
+       allIncidents!!.forEach {
+             if(it.caseId.equals(400434)){
+               hasCaseId400434 = true
+           }
+       }
+       assertTrue(hasCaseId400434)
     }
 
 }
