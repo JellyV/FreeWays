@@ -10,11 +10,15 @@ import kotlinx.coroutines.withContext
 import retrofit2.awaitResponse
 
 
-class IncidentService {
+interface IIncidentService {
+    suspend fun fetchIncidents(fromCaseYear: Int, toCaseYear: Int, state: Int, county: Int) : List<Incident>?
+}
+
+class IncidentService : IIncidentService {
 
 
 
-    suspend fun fetchIncidents(fromCaseYear: Int, toCaseYear: Int, state: Int, county: Int) : List<Incident>? {
+    override suspend fun fetchIncidents(fromCaseYear: Int, toCaseYear: Int, state: Int, county: Int) : List<Incident>? {
        return withContext(Dispatchers.IO) {
 
            var incidentList: MutableList<Incident> = mutableListOf()
