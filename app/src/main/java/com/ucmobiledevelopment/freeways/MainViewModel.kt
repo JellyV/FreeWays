@@ -14,7 +14,7 @@ class MainViewModel : ViewModel(){
 
     fun fetchIncidents(){
         viewModelScope.launch {
-           var innerIncidents = incidentService.fetchIncidents()
+           var innerIncidents = incidentService.fetchIncidents(2019, 2020, 33, 1)
             incidents.postValue(innerIncidents)
         }
     }
