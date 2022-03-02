@@ -32,6 +32,8 @@ class MainActivity : ComponentActivity() {
                 ) {
                     Greeting("Android")
                 }
+                //TO DO: var foo = incidents (mock data to test in debugger)
+                //TO DO: var i = 1 + 1
             }
         }
     }
