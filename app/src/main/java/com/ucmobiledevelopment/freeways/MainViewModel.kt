@@ -10,12 +10,10 @@ import kotlinx.coroutines.launch
 
 class MainViewModel(var incidentService : IIncidentService = IncidentService()) : ViewModel(){
     var incidents : MutableLiveData<List<Incident>> = MutableLiveData<List<Incident>>()
-    var incidentService : IncidentService = IncidentService()
 
-
-    fun fetchIncidents(){
+    fun fetchIncidents(fromCaseYear: Int, toCaseYear: Int, state: Int, county: Int){
         viewModelScope.launch {
-           var innerIncidents = incidentService.fetchIncidents(2019, 2020, 33, 1)
+           var innerIncidents = incidentService.fetchIncidents(fromCaseYear, toCaseYear, state, county)
             incidents.postValue(innerIncidents)
         }
     }

@@ -33,24 +33,9 @@ class IncidentTests {
     //var allIncidents : IncidentListDTO? = IncidentListDTO(Results = ArrayList<List<IncidentDTO>>())
     var allIncidents: List<Incident>? = ArrayList<Incident>()
 
-    lateinit var mvm : MainViewModel
 
-    @MockK
-    lateinit var mockIncidentService: IncidentService
 
-    private val mainThreadSurrogate = newSingleThreadContext("Main Thread")
 
-    @Before
-    fun initMocksAndMainThread(){
-        MockKAnnotations.init(this)
-        Dispatchers.setMain(mainThreadSurrogate)
-    }
-
-    @After
-    fun tearDown() {
-        Dispatchers.resetMain()
-        mainThreadSurrogate.close()
-    }
 
 
     @Test
@@ -60,17 +45,12 @@ class IncidentTests {
         ThenTheIncidentCollectionShouldContainIncidentWithCaseId400434()
     }
 
-
-
-
     private fun GivenIncidentServiceIsInitialized() {
         incidentService = IncidentService()
     }
 
     private suspend fun WhenIncidentDataAreReadAndParsed() {
-        var x = "blabla"
         allIncidents = incidentService.fetchIncidents(2019, 2020, 40, 1)
-        var y = "blabla"
     }
 
     private fun ThenTheIncidentCollectionShouldContainIncidentWithCaseId400434() {
@@ -89,56 +69,6 @@ class IncidentTests {
 
 
 
-
-
-
-
-    @Test
-    fun `given a view model with live data when populated with incidents between 2019 and 2020, in state 40, county 1, results show incident with caseId 400132`(){
-        givenViewModelIsInitializedWithMockData()
-        whenIncidentServiceFetchIncidentsInvoked()
-        thenResultsShouldContainIncidentWithCaseId400132()
-    }
-
-
-    private fun givenViewModelIsInitializedWithMockData() {
-        val incidents = ArrayList<Incident>()
-        incidents.add(Incident(stateId = 40, stateName = "Oklahoma", incidentId = 400132, countyId = 1, countyName = "Adair", latitude = "35.64110000", longitude = "-94.678300000"))
-        incidents.add(Incident(stateId = 40, stateName = "Oklahoma", incidentId = 400429, countyId = 1, countyName = "Adair", latitude = "35.98840000", longitude = "-94.655000000"))
-        incidents.add(Incident(stateId = 40, stateName = "Oklahoma", incidentId = 400434, countyId = 1, countyName = "Adair", latitude = "35.82660000", longitude = "-94.613000000"))
-
-        coEvery { mockIncidentService.fetchIncidents(2019, 2020, 40, 1) } returns incidents
-
-        mvm = MainViewModel()
-        mvm.incidentService = mockIncidentService
-    }
-
-    private fun whenIncidentServiceFetchIncidentsInvoked() {
-        mvm.fetchIncidents()
-    }
-
-    private fun thenResultsShouldContainIncidentWithCaseId400132() {
-        var allIncidents : List<Incident>? = ArrayList<Incident>()
-        val latch = CountDownLatch(1)
-        val observer = object :Observer<List<Incident>>{
-            override fun onChanged(receivedIncidents: List<Incident>?) {
-                allIncidents = receivedIncidents
-                latch.countDown()
-                mvm.incidents.removeObserver(this)
-            }
-        }
-        mvm.incidents.observeForever(observer)
-        latch.await(10, TimeUnit.SECONDS)
-        assertNotNull(allIncidents)
-        assertTrue(allIncidents!!.isNotEmpty())
-        var hasCaseId400434 = false
-        allIncidents!!.forEach {
-            if(it.caseId.equals(400132)){
-                hasCaseId400434 = true
-            }
-        }
-        assertTrue(hasCaseId400434)
-    }
 
 
 

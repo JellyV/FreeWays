@@ -22,8 +22,8 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            viewModel.fetchIncidents()
-           val incidents by viewModel.incidents.observeAsState(initial = emptyList())
+            viewModel.fetchIncidents(2019, 2020, 40, 1)
+            val incidents by viewModel.incidents.observeAsState(initial = emptyList())
             FreeWaysTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
