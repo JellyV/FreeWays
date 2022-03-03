@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/app_bar_search"
+        android:orderInCategory="100"
+        android:icon="@drawable/search_holo_dark"
+        android:title="Search"
+        android:actionViewClass="android.widget.SearchView"
+        android:showAsAction="always" />
+    <item android:title="Add Incident" />
+
+</menu>
