@@ -13,6 +13,7 @@ import junit.framework.Assert.assertTrue
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.newSingleThreadContext
 import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Before
@@ -28,6 +29,10 @@ class IncidentUnitTest {
     var rule: TestRule = InstantTaskExecutorRule()
 
     lateinit var mvm : MainViewModel
+
+    lateinit var incidentService : IncidentService
+
+    var allIncidents: List<Incident>? = ArrayList<Incident>()
 
     @MockK
     lateinit var mockIncidentService: IncidentService
@@ -94,4 +99,30 @@ class IncidentUnitTest {
         assertTrue(containsIncidentWithCaseId400132)
     }
 
+    @Test
+    fun `Given incident API is available When I fetch incidents from 2019 to 2020 in state 40 county 1 Then results should contain a case with caseId 400434`() = runTest{
+        givenIncidentServiceIsInitialized()
+        whenIncidentDataAreReadAndParsed()
+        thenTheIncidentCollectionShouldContainIncidentWithCaseId400434()
+    }
+
+    private fun givenIncidentServiceIsInitialized() {
+        incidentService = IncidentService()
+    }
+
+    private suspend fun whenIncidentDataAreReadAndParsed() {
+        allIncidents = incidentService.fetchIncidents(2019, 2020, 40, 1)
+    }
+
+    private fun thenTheIncidentCollectionShouldContainIncidentWithCaseId400434() {
+        assertNotNull(allIncidents)
+        assertTrue(allIncidents!!.isNotEmpty())
+        var hasCaseId400434 = false
+        allIncidents!!.forEach {
+            if(it.caseId.equals(400434)){
+                hasCaseId400434 = true
+            }
+        }
+        assertTrue(hasCaseId400434)
+    }
 }

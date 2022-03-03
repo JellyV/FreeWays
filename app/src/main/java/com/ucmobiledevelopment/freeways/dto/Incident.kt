@@ -12,5 +12,5 @@ data class Incident(
     var longitude: String = "",
     var way1: String = "",
     var way2: String = "",
-    var vehiclesInvolved: Int = 0
+    var vehiclesInvolved: Int = 0,
 )

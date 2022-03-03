@@ -15,5 +15,5 @@ data class IncidentDTO(
     val TOTALVEHICLES: String? = "",
     val TWAY_ID: String? = "",
     val TWAY_ID2: String? = "",
-    val VE_FORMS: String? = ""
+    val VE_FORMS: String? = "",
 )
