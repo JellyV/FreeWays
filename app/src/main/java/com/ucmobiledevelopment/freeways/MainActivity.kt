@@ -30,7 +30,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    Greeting("Android")
+                    greeting("Android")
                 }
                 //TO DO: var foo = incidents (mock data to test in debugger)
                 //TO DO: var i = 1 + 1
@@ -40,14 +40,14 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Greeting(name: String) {
+fun greeting(name: String) {
     Text(text = "Hello $name!")
 }
 
 @Preview(showBackground = true)
 @Composable
-fun DefaultPreview() {
+fun defaultPreview() {
     FreeWaysTheme {
-        Greeting("Android")
+        greeting("Android")
     }
 }

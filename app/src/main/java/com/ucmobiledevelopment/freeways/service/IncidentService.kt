@@ -40,7 +40,7 @@ class IncidentService : IIncidentService {
                         newIncident.stateId = if(it.STATE != null) it.STATE.toInt() else 0
                         newIncident.stateName = it.STATENAME ?: ""
                         newIncident.latitude = it.LATITUDE ?: ""
-                        newIncident.longitude = it.LONGITUD ?: ""
+                        newIncident.longitude = it.LONGITUDE ?: ""
                         newIncident.caseId =  if(it.ST_CASE != null) it.ST_CASE.toInt() else 0
                         newIncident.way1 = it.TWAY_ID ?: ""
                         newIncident.way2 = it.TWAY_ID2 ?: ""
