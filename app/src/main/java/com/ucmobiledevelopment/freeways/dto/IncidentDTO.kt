@@ -1,19 +1,19 @@
 package com.ucmobiledevelopment.freeways.dto
 
 data class IncidentDTO(
-    val CITY: String? = "",
-    val CITY_NAME: String? = "",
-    val COUNTY: String? = "",
-    val COUNTY_NAME: String? = "",
-    val CASE_YEAR: String? = "",
-    val FATALS: String? = "",
-    val LATITUDE: String? = "",
-    val LONGITUDE: String? = "",
-    val STATE: String? = "",
-    val STATE_NAME: String? = "",
-    val ST_CASE: String? = "",
-    val TOTALVEHICLES: String? = "",
-    val TWAY_ID: String? = "",
-    val TWAY_ID2: String? = "",
-    val VE_FORMS: String? = ""
+    internal val CITY: String? = "",
+    internal val CITY_NAME: String? = "",
+    internal val COUNTY: String? = "",
+    internal val COUNTY_NAME: String? = "",
+    internal val CASE_YEAR: String? = "",
+    internal val FATALS: String? = "",
+    internal val LATITUDE: String? = "",
+    internal val LONGITUDE: String? = "",
+    internal val STATE: String? = "",
+    internal val STATE_NAME: String? = "",
+    internal val ST_CASE: String? = "",
+    internal val TOTALVEHICLES: String? = "",
+    internal val TWAY_ID: String? = "",
+    internal val TWAY_ID2: String? = "",
+    internal val VE_FORMS: String? = ""
 )

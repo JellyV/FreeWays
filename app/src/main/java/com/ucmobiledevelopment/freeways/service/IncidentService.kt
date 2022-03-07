@@ -22,17 +22,17 @@ class IncidentService : IIncidentService {
     override suspend fun fetchIncidents(fromCaseYear: Int, toCaseYear: Int, state: Int, county: Int) : List<Incident>? {
 
         return withContext(Dispatchers.IO) {
-            var incidentList: MutableList<Incident> = mutableListOf()
+            val incidentList: MutableList<Incident> = mutableListOf()
 
             val service = RetrofitClientInstance.retrofitInstance?.create(IIncidentDAO::class.java)
             val incidentListDTO =
                 async { service?.getAllIncidents(fromCaseYear, toCaseYear, state, county) }
-            var result = incidentListDTO.await()?.awaitResponse()?.body()
+            val result = incidentListDTO.await()?.awaitResponse()?.body()
 
             if (result != null) {
                 if(result.Results[0] != null){
                     result.Results[0].forEach{
-                        var newIncident: Incident = Incident()
+                        val newIncident: Incident = Incident()
 
                         newIncident.cityName = it.CITY_NAME ?: ""
                         newIncident.countyId = if(it.COUNTY != null) it.COUNTY.toInt() else 0
