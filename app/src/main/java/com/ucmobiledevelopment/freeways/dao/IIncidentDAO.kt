@@ -10,7 +10,7 @@ import retrofit2.http.Query
 interface IIncidentDAO {
 
     @GET("CrashAPI/crashes/GetCrashesByLocation?format=json")
-    fun getAllIncidents(
+     fun getAllIncidents(
         @Query("fromCaseYear") fromCaseYear: Int, @Query("toCaseYear") toCaseYear: Int,
         @Query("state") state: Int, @Query("county") county: Int)
         : Call<IncidentListDTO>

@@ -33,10 +33,6 @@ class IncidentTests {
     var allIncidents: List<Incident>? = ArrayList<Incident>()
 
 
-
-
-
-
     @Test
     fun `Given incident API is available When I fetch incidents from 2019 to 2020 in state 40 county 1 Then results should contain a case with caseId 400434`() = runTest{
         givenIncidentServiceIsInitialized()
