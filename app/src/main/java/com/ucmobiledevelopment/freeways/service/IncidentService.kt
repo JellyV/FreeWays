@@ -15,6 +15,8 @@ interface IIncidentService {
 
 class IncidentService : IIncidentService {
 
+
+
     override suspend fun fetchIncidents(fromCaseYear: Int, toCaseYear: Int, state: Int, county: Int) : List<Incident>? {
 
         return withContext(Dispatchers.IO) {
@@ -45,8 +47,12 @@ class IncidentService : IIncidentService {
 
                 }
             }
+
             return@withContext incidentList
         }
+
+
+
 
     }
 
