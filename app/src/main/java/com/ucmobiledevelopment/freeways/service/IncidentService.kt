@@ -17,8 +17,6 @@ interface IIncidentService {
 
 class IncidentService : IIncidentService {
 
-
-
     override suspend fun fetchIncidents(fromCaseYear: Int, toCaseYear: Int, state: Int, county: Int) : List<Incident>? {
 
         return withContext(Dispatchers.IO) {
@@ -34,30 +32,24 @@ class IncidentService : IIncidentService {
                     result.Results[0].forEach{
                         var newIncident: Incident = Incident()
 
-                        newIncident.cityName = it.CITYNAME ?: ""
+                        newIncident.cityName = it.CITY_NAME ?: ""
                         newIncident.countyId = if(it.COUNTY != null) it.COUNTY.toInt() else 0
-                        newIncident.countyName = it.COUNTYNAME ?: ""
+                        newIncident.countyName = it.COUNTY_NAME ?: ""
                         newIncident.stateId = if(it.STATE != null) it.STATE.toInt() else 0
-                        newIncident.stateName = it.STATENAME ?: ""
+                        newIncident.stateName = it.STATE_NAME ?: ""
                         newIncident.latitude = it.LATITUDE ?: ""
                         newIncident.longitude = it.LONGITUDE ?: ""
                         newIncident.caseId =  if(it.ST_CASE != null) it.ST_CASE.toInt() else 0
                         newIncident.way1 = it.TWAY_ID ?: ""
                         newIncident.way2 = it.TWAY_ID2 ?: ""
-                        newIncident.vehiclesInvolved =  if(it.TOTALVEHICLES != null) it.TOTALVEHICLES.toInt() else 0
+                        newIncident.vehiclesInvolved =  if(it.TOTAL_VEHICLES != null) it.TOTAL_VEHICLES.toInt() else 0
 
                         incidentList.add(newIncident)
 
                     }
                 }
             }
-
             return@withContext incidentList
         }
-
-
-
-
     }
-
 }
