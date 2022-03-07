@@ -30,30 +30,24 @@ class IncidentTests {
     var rule: TestRule = InstantTaskExecutorRule()
 
     lateinit var incidentService : IncidentService
-    //var allIncidents : IncidentListDTO? = IncidentListDTO(Results = ArrayList<List<IncidentDTO>>())
     var allIncidents: List<Incident>? = ArrayList<Incident>()
-
-
-
-
-
 
     @Test
     fun `Given incident API is available When I fetch incidents from 2019 to 2020 in state 40 county 1 Then results should contain a case with caseId 400434`() = runTest{
-        GivenIncidentServiceIsInitialized()
-        WhenIncidentDataAreReadAndParsed()
-        ThenTheIncidentCollectionShouldContainIncidentWithCaseId400434()
+        givenIncidentServiceIsInitialized()
+        whenIncidentDataAreReadAndParsed()
+        thenTheIncidentCollectionShouldContainIncidentWithCaseId400434()
     }
 
-    private fun GivenIncidentServiceIsInitialized() {
+    private fun givenIncidentServiceIsInitialized() {
         incidentService = IncidentService()
     }
 
-    private suspend fun WhenIncidentDataAreReadAndParsed() {
+    private suspend fun whenIncidentDataAreReadAndParsed() {
         allIncidents = incidentService.fetchIncidents(2019, 2020, 40, 1)
     }
 
-    private fun ThenTheIncidentCollectionShouldContainIncidentWithCaseId400434() {
+    private fun thenTheIncidentCollectionShouldContainIncidentWithCaseId400434() {
         assertNotNull(allIncidents)
         assertTrue(allIncidents!!.isNotEmpty())
        var hasCaseId400434 = false
@@ -64,12 +58,5 @@ class IncidentTests {
        }
        assertTrue(hasCaseId400434)
     }
-
-
-
-
-
-
-
 
 }

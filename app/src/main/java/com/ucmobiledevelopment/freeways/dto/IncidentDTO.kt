@@ -8,7 +8,7 @@ data class IncidentDTO(
     val CaseYear: String? = "",
     val FATALS: String? = "",
     val LATITUDE: String? = "",
-    val LONGITUD: String? = "",
+    val LONGITUDE: String? = "",
     val STATE: String? = "",
     val STATENAME: String? = "",
     val ST_CASE: String? = "",
