@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "687272059997",
+    "project_id": "freeways-edc5e",
+    "storage_bucket": "freeways-edc5e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:687272059997:android:3a2e32ca6ea789d46b99b4",
+        "android_client_info": {
+          "package_name": "com.ucmobiledevelopment.freeways"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "687272059997-rqmsk4rbk9k1u93p1u29rmmsqmk5hanv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCgBHPaXzKdcEj0kcssyuh_0DWLQEOBXuY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "687272059997-rqmsk4rbk9k1u93p1u29rmmsqmk5hanv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
