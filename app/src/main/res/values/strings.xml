@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">FreeWays</string>
+    <string name="stateID">State ID</string>
+    <string name="StateName">State Name</string>
+    <string name="CountyID">County ID</string>
+    <string name="CountyName">County Name</string>
+    <string name="CityName">City Name</string>
+    <string name="Latitude">Latitude</string>
+    <string name="Longitude">Longitude</string>
+    <string name="Way1">Way 1</string>
+    <string name="Way2">Way 2</string>
+    <string name="VehiclesInvolved">Number of Vehicles Involved</string>
 </resources>
