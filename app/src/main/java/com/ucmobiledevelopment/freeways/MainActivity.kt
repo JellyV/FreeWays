@@ -38,7 +38,7 @@ class MainActivity : ComponentActivity() {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = Purple200,
+                    color = MaterialTheme.colors.background,
                 ) {
                     IncidentInfo("Android", incidents)
                 }
@@ -107,9 +107,9 @@ class MainActivity : ComponentActivity() {
                 modifier = Modifier.fillMaxWidth()
             )
             OutlinedTextField(
-                value = inVehiclesInvolved,
+                        value = inVehiclesInvolved,
                 onValueChange = { inVehiclesInvolved = it },
-                label = { Text(vehiclesInvolved) },
+                label = { Text(stringResource(R.string.vehiclesInvolved)) },
                 modifier = Modifier.fillMaxWidth()
             )
             Button(
@@ -128,10 +128,10 @@ class MainActivity : ComponentActivity() {
                         vehiclesInvolved = 0
 
                     }
-                    viewModel.save(incident)
+                    viewModel.save(incidentInfo)
                     Toast.makeText(
                         context,
-                        "$inCityName $inCountyName $inStateName $inWay1 $inWay2 $inVehiclesInvolved",
+                        "$inCityName $inCountyName $inStateName $inLatitude $inLongitude $inWay1 $inWay2 $inVehiclesInvolved",
                         Toast.LENGTH_LONG
                     ).show()
                 }
@@ -142,16 +142,11 @@ class MainActivity : ComponentActivity() {
     }
 
 
-    @Composable
-    fun Greeting(name: String) {
-        Text(text = "Hello $name!")
-    }
-
     @Preview(showBackground = true)
     @Composable
     fun DefaultPreview() {
         FreeWaysTheme {
-            Greeting("Android")
+
         }
     }
 }
