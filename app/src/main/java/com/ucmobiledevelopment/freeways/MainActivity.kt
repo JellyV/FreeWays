@@ -1,31 +1,32 @@
 package com.ucmobiledevelopment.freeways
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.window.PopupProperties
 import com.ucmobiledevelopment.freeways.dto.Incident
 import com.ucmobiledevelopment.freeways.ui.theme.FreeWaysTheme
+import com.ucmobiledevelopment.freeways.ui.theme.Purple200
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : ComponentActivity() {
 
     private  var selectedIncident: Incident? = null
-    private var inIncidentName: String = ""
     private val viewModel : MainViewModel by viewModel<MainViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,92 +38,105 @@ class MainActivity : ComponentActivity() {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
+                    color = Purple200,
                 ) {
-                    Greeting("Android")
+                    IncidentInfo("Android", incidents)
                 }
                 //TO DO: var foo = incidents (mock data to test in debugger)
                 //TO DO: var i = 1 + 1
             }
         }
     }
+        //TO DO: Get id to be passed from Incident and saved by using let corountine
+        //TO DO: ids needing to be passed [stateId and countyId]
+        //TO DO: vehicles involved needs to be passed or converted from a string based on the users input.
+        //TO DO: How do we get the dataIn without using the drop downs.
 
     @Composable
-    fun TextFieldWithDropdownUsage(dataIn: List<Incident>, label : String = "", take :Int = 3) {
-
-        val dropDownOptions = remember { mutableStateOf(listOf<Incident>()) }
-        val textFieldValue = remember { mutableStateOf(TextFieldValue()) }
-        val dropDownExpanded = remember { mutableStateOf(false) }
-
-        fun onDropdownDismissRequest() {
-            dropDownExpanded.value = false
-        }
-
-        fun onValueChanged(value: TextFieldValue) {
-            inIncidentName = value.text
-            dropDownExpanded.value = true
-            textFieldValue.value = value
-            dropDownOptions.value = dataIn.filter {
-                it.toString().startsWith(value.text) && it.toString() != value.text
-            }.take(take)
-        }
-
-        TextFieldWithDropdown(
-            modifier = Modifier.fillMaxWidth(),
-            value = textFieldValue.value,
-            setValue = ::onValueChanged,
-            onDismissRequest = ::onDropdownDismissRequest,
-            dropDownExpanded = dropDownExpanded.value,
-            list = dropDownOptions.value,
-            label = label
-        )
-    }
-
-    @Composable
-    fun TextFieldWithDropdown(
-        modifier: Modifier = Modifier,
-        value: TextFieldValue,
-        setValue: (TextFieldValue) -> Unit,
-        onDismissRequest: () -> Unit,
-        dropDownExpanded: Boolean,
-        list: List<Incident>,
-        label: String = ""
-    ) {
-        Box(modifier) {
-            TextField(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .onFocusChanged { focusState ->
-                        if (!focusState.isFocused)
-                            onDismissRequest()
-                    },
-                value = value,
-                onValueChange = setValue,
-                label = { Text(label) },
-                colors = TextFieldDefaults.outlinedTextFieldColors()
+    fun IncidentInfo(name: String, incidents : List<Incident> = ArrayList<Incident>()) {
+        var inStateName by remember { mutableStateOf("") }
+        var inCountyName by remember { mutableStateOf("") }
+        var inCityName by remember { mutableStateOf("") }
+        var inLatitude by remember { mutableStateOf("") }
+        var inLongitude by remember { mutableStateOf("") }
+        var inWay1 by remember { mutableStateOf("") }
+        var inWay2 by remember { mutableStateOf("") }
+        var inVehiclesInvolved by remember { mutableStateOf("") }
+        val context = LocalContext.current
+        Column {
+            OutlinedTextField(
+                value = inStateName,
+                onValueChange = { inStateName = it },
+                label = { Text(stringResource(R.string.stateName)) },
+                modifier = Modifier.fillMaxWidth()
             )
-            DropdownMenu(
-                expanded = dropDownExpanded,
-                properties = PopupProperties(
-                    focusable = false,
-                    dismissOnBackPress = true,
-                    dismissOnClickOutside = true
-                ),
-                onDismissRequest = onDismissRequest
-            ) {
-                list.forEach { text ->
-                    DropdownMenuItem(onClick = {
-                        setValue(
-                            TextFieldValue(
-                                text.toString(),
-                                TextRange(text.toString().length)
-                            )
-                        )
-                        selectedIncident = text
-                    }) {
-                        Text(text = text.toString())
+            OutlinedTextField(
+                value = inCountyName,
+                onValueChange = { inCountyName = it },
+                label = { Text(stringResource(R.string.countyName)) },
+                modifier = Modifier.fillMaxWidth()
+            )
+            OutlinedTextField(
+                value = inCityName,
+                onValueChange = { inCityName = it },
+                label = { Text(stringResource(R.string.cityName)) },
+                modifier = Modifier.fillMaxWidth()
+            )
+            OutlinedTextField(
+                value = inLatitude,
+                onValueChange = { inLatitude = it },
+                label = { Text(stringResource(R.string.latitude)) },
+                modifier = Modifier.fillMaxWidth()
+            )
+            OutlinedTextField(
+                value = inLongitude,
+                onValueChange = { inLongitude = it },
+                label = { Text(stringResource(R.string.longitude)) },
+                modifier = Modifier.fillMaxWidth()
+            )
+            OutlinedTextField(
+                value = inWay1,
+                onValueChange = { inWay1 = it },
+                label = { Text(stringResource(R.string.way1)) },
+                modifier = Modifier.fillMaxWidth()
+            )
+            OutlinedTextField(
+                value = inWay2,
+                onValueChange = { inWay2 = it },
+                label = { Text(stringResource(R.string.way2)) },
+                modifier = Modifier.fillMaxWidth()
+            )
+            OutlinedTextField(
+                value = inVehiclesInvolved,
+                onValueChange = { inVehiclesInvolved = it },
+                label = { Text(vehiclesInvolved) },
+                modifier = Modifier.fillMaxWidth()
+            )
+            Button(
+                onClick = {
+                    var incidentInfo = Incident().apply {
+
+                        stateId =  0
+                        stateName = inStateName
+                        countyId = 0
+                        countyName = inCountyName
+                        cityName = inCityName
+                        latitude = inLatitude
+                        longitude = inLongitude
+                        way1 = inWay1
+                        way2 = inWay2
+                        vehiclesInvolved = 0
+
                     }
+                    viewModel.save(incident)
+                    Toast.makeText(
+                        context,
+                        "$inCityName $inCountyName $inStateName $inWay1 $inWay2 $inVehiclesInvolved",
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
+            ) {
+                Text(text = "Save")
             }
         }
     }
