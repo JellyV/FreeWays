@@ -8,4 +8,5 @@
     <string name="way1">way1</string>
     <string name="way2">way2</string>
     <string name="vehiclesInvolved">vehiclesInvolved</string>
+    <string name="cameraPermissionDenied">Unable to load camera without permission.</string>
 </resources>

@@ -1,9 +1,15 @@
 package com.ucmobiledevelopment.freeways
 
+import android.Manifest
+import android.content.pm.PackageManager.PERMISSION_GRANTED
+import android.icu.text.SimpleDateFormat
+import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,13 +25,20 @@ import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.window.PopupProperties
+import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import com.ucmobiledevelopment.freeways.dto.Incident
 import com.ucmobiledevelopment.freeways.ui.theme.FreeWaysTheme
 import com.ucmobiledevelopment.freeways.ui.theme.Purple200
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.io.File
+import java.util.*
+import kotlin.collections.ArrayList
 
 class MainActivity : ComponentActivity() {
 
+    private var uri: Uri? = null
+    private var currentImagePath: String = ""
     private  var selectedIncident: Incident? = null
     private val viewModel : MainViewModel by viewModel<MainViewModel>()
 
@@ -47,10 +60,7 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
-        //TO DO: Get id to be passed from Incident and saved by using let corountine
-        //TO DO: ids needing to be passed [stateId and countyId]
-        //TO DO: vehicles involved needs to be passed or converted from a string based on the users input.
-        //TO DO: How do we get the dataIn without using the drop downs.
+
 
     @Composable
     fun IncidentInfo(name: String, incidents : List<Incident> = ArrayList<Incident>()) {
@@ -138,8 +148,76 @@ class MainActivity : ComponentActivity() {
             ) {
                 Text(text = "Save")
             }
+//            Button(                       (TO DO: Implment SignIn Button in firebase)
+//                onClick = {
+//                    signIn()
+//                }
+//            ) {
+//                Text(text = "Logon")
+//            }
+           Button(
+                onClick = {
+                    takePhoto()
+                }
+            ) {
+                Text(text = "Photo")
+            }
         }
     }
+
+    private fun takePhoto() {
+        if (hasCameraPermission() == PERMISSION_GRANTED && hasExternalStoragePermission() == PERMISSION_GRANTED){
+            // User has already granted permission for these activities. Toggle the camera!
+            invokeCamera()
+        }
+        else{
+            // User has not granted permissions, so we must request.
+            requestMultiplePermissionsLauncher.launch(arrayOf(
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.CAMERA
+            ))
+        }
+    }
+
+    private val requestMultiplePermissionsLauncher = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {
+        resultsMap ->
+        var permissionGranted = false
+        resultsMap.forEach {
+            if (it.value == true) {
+                permissionGranted = it.value
+            }
+            else {
+                permissionGranted = false
+                return@forEach
+            }
+        }
+        if (permissionGranted) {
+            invokeCamera()
+        }
+        else {
+            Toast.makeText(this, getString(R.string.cameraPermissionDenied), Toast.LENGTH_LONG).show()
+        }
+    }
+
+    private fun invokeCamera() {
+        val file = createImageFile()
+        uri = FileProvider.getUriForFile(this, "com.ucmobiledevelopment.freeways.fileprovider", file)
+    }
+
+    private fun createImageFile() : File {
+        val timestamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        val imageDirectory = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        return File.createTempFile(
+            "Incident_${timestamp}",
+            ".jpg",
+            imageDirectory
+        ).apply { 
+            currentImagePath = absolutePath
+        }
+    }
+
+    fun hasCameraPermission() = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+    fun hasExternalStoragePermission() = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
 
 
     @Preview(showBackground = true)
