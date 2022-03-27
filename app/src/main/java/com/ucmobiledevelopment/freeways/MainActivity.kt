@@ -16,6 +16,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import com.ucmobiledevelopment.freeways.ui.theme.FreeWaysTheme
 import com.ucmobiledevelopment.freeways.ui.theme.Purple200
+import com.ucmobiledevelopment.freeways.ui.theme.Purple500
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : ComponentActivity() {
@@ -33,17 +34,16 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    Greeting("Android")
+
                 }
                 val context = LocalContext.current
                 ExtendedFloatingActionButton (
                     text = {  Text(text = "Report Incident") },
                     onClick = { val intent = Intent(context, ReportIncidentActivity::class.java)
-                        intent.putExtra("text", "text")
-                        context.startActivity(intent)
-                    },
+                                context.startActivity(intent)
+                              },
                     icon = { Icon(Icons.Filled.Add,"@drawable/plus_icon") },
-                    backgroundColor = Purple200
+                    backgroundColor = Purple500
                 )
                 //TO DO: var foo = incidents (mock data to test in debugger)
                 //TO DO: var i = 1 + 1
