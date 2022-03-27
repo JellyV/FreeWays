@@ -1,16 +1,18 @@
 package com.ucmobiledevelopment.freeways
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.LocalContext
@@ -18,10 +20,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.PopupProperties
 import com.ucmobiledevelopment.freeways.dto.Incident
 import com.ucmobiledevelopment.freeways.ui.theme.FreeWaysTheme
 import com.ucmobiledevelopment.freeways.ui.theme.Purple200
+import com.ucmobiledevelopment.freeways.ui.theme.Purple500
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : ComponentActivity() {
@@ -42,6 +46,29 @@ class MainActivity : ComponentActivity() {
                 ) {
                     IncidentInfo("Android", incidents)
                 }
+
+                val context = LocalContext.current
+
+                Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+                    Row(Modifier
+                        .padding(5.dp),
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        ExtendedFloatingActionButton (
+                            text = {  Text(text = "Report Incident") },
+                            onClick = { val intent = Intent(context, ReportIncidentActivity::class.java)
+                                context.startActivity(intent)
+                            },
+                            icon = { Icon(Icons.Filled.Add,"@drawable/plus_icon") },
+                            backgroundColor = Purple500
+                        )
+                    }
+                }
+
+
+
+
                 //TO DO: var foo = incidents (mock data to test in debugger)
                 //TO DO: var i = 1 + 1
             }
@@ -63,82 +90,92 @@ class MainActivity : ComponentActivity() {
         var inWay2 by remember { mutableStateOf("") }
         var inVehiclesInvolved by remember { mutableStateOf("") }
         val context = LocalContext.current
-        Column {
-            OutlinedTextField(
-                value = inStateName,
-                onValueChange = { inStateName = it },
-                label = { Text(stringResource(R.string.stateName)) },
-                modifier = Modifier.fillMaxWidth()
-            )
-            OutlinedTextField(
-                value = inCountyName,
-                onValueChange = { inCountyName = it },
-                label = { Text(stringResource(R.string.countyName)) },
-                modifier = Modifier.fillMaxWidth()
-            )
-            OutlinedTextField(
-                value = inCityName,
-                onValueChange = { inCityName = it },
-                label = { Text(stringResource(R.string.cityName)) },
-                modifier = Modifier.fillMaxWidth()
-            )
-            OutlinedTextField(
-                value = inLatitude,
-                onValueChange = { inLatitude = it },
-                label = { Text(stringResource(R.string.latitude)) },
-                modifier = Modifier.fillMaxWidth()
-            )
-            OutlinedTextField(
-                value = inLongitude,
-                onValueChange = { inLongitude = it },
-                label = { Text(stringResource(R.string.longitude)) },
-                modifier = Modifier.fillMaxWidth()
-            )
-            OutlinedTextField(
-                value = inWay1,
-                onValueChange = { inWay1 = it },
-                label = { Text(stringResource(R.string.way1)) },
-                modifier = Modifier.fillMaxWidth()
-            )
-            OutlinedTextField(
-                value = inWay2,
-                onValueChange = { inWay2 = it },
-                label = { Text(stringResource(R.string.way2)) },
-                modifier = Modifier.fillMaxWidth()
-            )
-            OutlinedTextField(
-                        value = inVehiclesInvolved,
-                onValueChange = { inVehiclesInvolved = it },
-                label = { Text(stringResource(R.string.vehiclesInvolved)) },
-                modifier = Modifier.fillMaxWidth()
-            )
-            Button(
-                onClick = {
-                    var incidentInfo = Incident().apply {
 
-                        stateId =  0
-                        stateName = inStateName
-                        countyId = 0
-                        countyName = inCountyName
-                        cityName = inCityName
-                        latitude = inLatitude
-                        longitude = inLongitude
-                        way1 = inWay1
-                        way2 = inWay2
-                        vehiclesInvolved = 0
+        Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+            Column {
+                OutlinedTextField(
+                    value = inStateName,
+                    onValueChange = { inStateName = it },
+                    label = { Text(stringResource(R.string.stateName)) },
+                    modifier = Modifier.fillMaxWidth()
+                )
+                OutlinedTextField(
+                    value = inCountyName,
+                    onValueChange = { inCountyName = it },
+                    label = { Text(stringResource(R.string.countyName)) },
+                    modifier = Modifier.fillMaxWidth()
+                )
+                OutlinedTextField(
+                    value = inCityName,
+                    onValueChange = { inCityName = it },
+                    label = { Text(stringResource(R.string.cityName)) },
+                    modifier = Modifier.fillMaxWidth()
+                )
+                OutlinedTextField(
+                    value = inLatitude,
+                    onValueChange = { inLatitude = it },
+                    label = { Text(stringResource(R.string.latitude)) },
+                    modifier = Modifier.fillMaxWidth()
+                )
+                OutlinedTextField(
+                    value = inLongitude,
+                    onValueChange = { inLongitude = it },
+                    label = { Text(stringResource(R.string.longitude)) },
+                    modifier = Modifier.fillMaxWidth()
+                )
+                OutlinedTextField(
+                    value = inWay1,
+                    onValueChange = { inWay1 = it },
+                    label = { Text(stringResource(R.string.way1)) },
+                    modifier = Modifier.fillMaxWidth()
+                )
+                OutlinedTextField(
+                    value = inWay2,
+                    onValueChange = { inWay2 = it },
+                    label = { Text(stringResource(R.string.way2)) },
+                    modifier = Modifier.fillMaxWidth()
+                )
+                OutlinedTextField(
+                    value = inVehiclesInvolved,
+                    onValueChange = { inVehiclesInvolved = it },
+                    label = { Text(stringResource(R.string.vehiclesInvolved)) },
+                    modifier = Modifier.fillMaxWidth()
+                )
+                Button(
+                    onClick = {
+                        var incidentInfo = Incident().apply {
 
+                            stateId =  0
+                            stateName = inStateName
+                            countyId = 0
+                            countyName = inCountyName
+                            cityName = inCityName
+                            latitude = inLatitude
+                            longitude = inLongitude
+                            way1 = inWay1
+                            way2 = inWay2
+                            vehiclesInvolved = 0
+
+                        }
+                        viewModel.save(incidentInfo)
+                        Toast.makeText(
+                            context,
+                            "$inCityName $inCountyName $inStateName $inLatitude $inLongitude $inWay1 $inWay2 $inVehiclesInvolved",
+                            Toast.LENGTH_LONG
+                        ).show()
                     }
-                    viewModel.save(incidentInfo)
-                    Toast.makeText(
-                        context,
-                        "$inCityName $inCountyName $inStateName $inLatitude $inLongitude $inWay1 $inWay2 $inVehiclesInvolved",
-                        Toast.LENGTH_LONG
-                    ).show()
+                ) {
+                    Text(text = "Save")
                 }
-            ) {
-                Text(text = "Save")
             }
         }
+
+
+    }
+
+    @Composable
+    fun Greeting(name: String) {
+        Text(text = "Hello $name!")
     }
 
 
@@ -146,7 +183,7 @@ class MainActivity : ComponentActivity() {
     @Composable
     fun DefaultPreview() {
         FreeWaysTheme {
-
+            Greeting("Android")
         }
     }
 }

@@ -24,7 +24,7 @@ class ReportIncidentActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    Greeting("Android")
+                  //  Greeting("Android")
                 }
                 val context = LocalContext.current
                 ExtendedFloatingActionButton (
