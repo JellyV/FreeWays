@@ -2,6 +2,7 @@ package com.ucmobiledevelopment.freeways
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -22,6 +23,11 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.PopupProperties
+import com.firebase.ui.auth.AuthUI
+import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
+import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.ucmobiledevelopment.freeways.dto.Incident
 import com.ucmobiledevelopment.freeways.ui.theme.FreeWaysTheme
 import com.ucmobiledevelopment.freeways.ui.theme.Purple200
@@ -30,7 +36,8 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : ComponentActivity() {
 
-    private  var selectedIncident: Incident? = null
+    private var user: FirebaseUser? = FirebaseAuth.getInstance().currentUser
+    private var selectedIncident: Incident? = null
     private val viewModel : MainViewModel by viewModel<MainViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -66,18 +73,10 @@ class MainActivity : ComponentActivity() {
                     }
                 }
 
-
-
-
-                //TO DO: var foo = incidents (mock data to test in debugger)
-                //TO DO: var i = 1 + 1
             }
         }
     }
-        //TO DO: Get id to be passed from Incident and saved by using let corountine
-        //TO DO: ids needing to be passed [stateId and countyId]
-        //TO DO: vehicles involved needs to be passed or converted from a string based on the users input.
-        //TO DO: How do we get the dataIn without using the drop downs.
+
 
     @Composable
     fun IncidentInfo(name: String, incidents : List<Incident> = ArrayList<Incident>()) {
@@ -167,6 +166,14 @@ class MainActivity : ComponentActivity() {
                 ) {
                     Text(text = "Save")
                 }
+
+                Button(
+                    onClick = {
+                        signIn()
+                    }
+                ) {
+                    Text(text = "Logon")
+                }
             }
         }
 
@@ -184,6 +191,34 @@ class MainActivity : ComponentActivity() {
     fun DefaultPreview() {
         FreeWaysTheme {
             Greeting("Android")
+        }
+    }
+
+    private fun signIn() {
+        val providers = arrayListOf(
+            AuthUI.IdpConfig.EmailBuilder().build()
+        )
+        val signInIntent = AuthUI.getInstance()
+            .createSignInIntentBuilder()
+            .setAvailableProviders(providers)
+            .build()
+
+        signInLauncher.launch(signInIntent)
+
+    }
+
+    private val signInLauncher = registerForActivityResult(
+        FirebaseAuthUIActivityResultContract()
+    ){
+        res -> this.signInResult(res)
+    }
+
+    private fun signInResult(result: FirebaseAuthUIAuthenticationResult) {
+        val response = result.idpResponse
+        if (result.resultCode == RESULT_OK) {
+            user = FirebaseAuth.getInstance().currentUser
+        } else {
+            Log.e("MainActivity.kt", "Error logging in " + response?.error?.errorCode)
         }
     }
 }
