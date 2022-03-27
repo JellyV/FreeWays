@@ -1,11 +1,14 @@
 package com.ucmobiledevelopment.freeways
 
 import android.Manifest
+import android.content.ContentValues.TAG
 import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.icu.text.SimpleDateFormat
 import android.net.Uri
+import android.nfc.Tag
 import android.os.Bundle
 import android.os.Environment
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -31,6 +34,7 @@ import com.ucmobiledevelopment.freeways.dto.Incident
 import com.ucmobiledevelopment.freeways.ui.theme.FreeWaysTheme
 import com.ucmobiledevelopment.freeways.ui.theme.Purple200
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.logger.KOIN_TAG
 import java.io.File
 import java.util.*
 import kotlin.collections.ArrayList
@@ -38,7 +42,7 @@ import kotlin.collections.ArrayList
 class MainActivity : ComponentActivity() {
 
     private var uri: Uri? = null
-    private var currentImagePath: String = ""
+    private lateinit var currentImagePath: String
     private  var selectedIncident: Incident? = null
     private val viewModel : MainViewModel by viewModel<MainViewModel>()
 
@@ -201,7 +205,14 @@ class MainActivity : ComponentActivity() {
 
     private fun invokeCamera() {
         val file = createImageFile()
-        uri = FileProvider.getUriForFile(this, "com.ucmobiledevelopment.freeways.fileprovider", file)
+        try{
+            uri = FileProvider.getUriForFile(this, "com.ucmobiledevelopment.freeways.fileprovider", file)
+        }
+        catch (e: Exception) {
+            Log.e(TAG, "Error: ${e.message}")
+            var foo = e.message
+        }
+        getCameraImage.launch(uri)
     }
 
     private fun createImageFile() : File {
@@ -213,6 +224,16 @@ class MainActivity : ComponentActivity() {
             imageDirectory
         ).apply { 
             currentImagePath = absolutePath
+        }
+    }
+
+    private val getCameraImage = registerForActivityResult(ActivityResultContracts.TakePicture()) {
+        success ->
+        if (success) {
+            Log.i(TAG, "Image Location: $uri")
+        }
+        else {
+            Log.e(TAG, "Image not saved. $uri")
         }
     }
 
