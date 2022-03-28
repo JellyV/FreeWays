@@ -40,9 +40,11 @@ class MainViewModel(var incidentService : IIncidentService = IncidentService()) 
                     allIncidents.add(Incident(caseId = NEW_INCIDENT))
                     val documents = snapshot.documents
                     documents.forEach {
-                        val incident = it.toObject(Incident::class.java)
+                        docSnap ->
+                        val incident = docSnap.toObject(Incident::class.java)
                         incident?.let {
-                            allIncidents.add(it)
+                            incident ->
+                            allIncidents.add(incident)
                         }
                     }
                     incidents.value = allIncidents
