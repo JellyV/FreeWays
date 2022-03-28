@@ -143,7 +143,7 @@ class MainActivity : ComponentActivity() {
                 )
                 Button(
                     onClick = {
-                        var incidentInfo = Incident().apply {
+                        var incidentInfo = Incident("1").apply {
 
                             stateId =  0
                             stateName = inStateName

@@ -37,7 +37,7 @@ class MainViewModel(var incidentService : IIncidentService = IncidentService()) 
                 // if we reached this point , there was not an error
                 snapshot?.let {
                     val allIncidents = ArrayList<Incident>()
-                    allIncidents.add(Incident(caseId = NEW_INCIDENT))
+                    allIncidents.add(Incident(incidentId = "1", caseId = NEW_INCIDENT))
                     val documents = snapshot.documents
                     documents.forEach {
                         docSnap ->
