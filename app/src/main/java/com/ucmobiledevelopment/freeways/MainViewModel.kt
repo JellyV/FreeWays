@@ -74,7 +74,7 @@ class MainViewModel(var incidentService : IIncidentService = IncidentService()) 
             incident.incidentId = document.id
             val handle = document.set(incident)
             handle.addOnSuccessListener { Log.d("Firebase", "Document saved") }
-            handle.addOnFailureListener { Log.e("Firebase", "Save failed $it") }
+            handle.addOnFailureListener { Log.e("Firebase", "Save failed $user") }
         }
 
     }
@@ -84,7 +84,7 @@ class MainViewModel(var incidentService : IIncidentService = IncidentService()) 
             user ->
             val handle = firestore.collection("users").document(user.uid).set(user)
             handle.addOnSuccessListener { Log.d("Firebase", "User document saved") }
-            handle.addOnFailureListener { Log.e("Firebase", "User save failed $it") }
+            handle.addOnFailureListener { Log.e("Firebase", "User save failed $user") }
         }
 
     }
