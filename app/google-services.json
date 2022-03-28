@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "687272059997-rquqi0a5lvaejq8kngqu1f9gke25fpf4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ucmobiledevelopment.freeways",
+            "certificate_hash": "f9bba94357e351fe144f69071f5f1b069a2b1195"
+          }
+        },
+        {
           "client_id": "687272059997-rqmsk4rbk9k1u93p1u29rmmsqmk5hanv.apps.googleusercontent.com",
           "client_type": 3
         }
