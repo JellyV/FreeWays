@@ -6,7 +6,6 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -15,34 +14,36 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextRange
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.PopupProperties
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.ucmobiledevelopment.freeways.dto.Incident
+import com.ucmobiledevelopment.freeways.dto.User
 import com.ucmobiledevelopment.freeways.ui.theme.FreeWaysTheme
-import com.ucmobiledevelopment.freeways.ui.theme.Purple200
 import com.ucmobiledevelopment.freeways.ui.theme.Purple500
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : ComponentActivity() {
 
-    private var user: FirebaseUser? = FirebaseAuth.getInstance().currentUser
+    private var firebaseUser: FirebaseUser? = FirebaseAuth.getInstance().currentUser
     private var selectedIncident: Incident? = null
     private val viewModel : MainViewModel by viewModel<MainViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            firebaseUser?.let {
+                val user = User(it.uid, "")
+                viewModel.user = user
+                viewModel.listenToIncidents()
+            }
+
             viewModel.fetchIncidents(2019, 2020, 40, 1)
             val incidents by viewModel.incidents.observeAsState(initial = emptyList())
             FreeWaysTheme {
@@ -156,7 +157,7 @@ class MainActivity : ComponentActivity() {
                             vehiclesInvolved = 0
 
                         }
-                        viewModel.save(incidentInfo)
+                        viewModel.saveIncident(incidentInfo)
                         Toast.makeText(
                             context,
                             "$inCityName $inCountyName $inStateName $inLatitude $inLongitude $inWay1 $inWay2 $inVehiclesInvolved",
@@ -216,7 +217,15 @@ class MainActivity : ComponentActivity() {
     private fun signInResult(result: FirebaseAuthUIAuthenticationResult) {
         val response = result.idpResponse
         if (result.resultCode == RESULT_OK) {
-            user = FirebaseAuth.getInstance().currentUser
+            firebaseUser = FirebaseAuth.getInstance().currentUser
+            firebaseUser?.let {
+                val user = com.ucmobiledevelopment.freeways.dto.User(it.uid, it.displayName)
+                viewModel.user = user
+                viewModel.saveUser()
+                viewModel.listenToIncidents()
+
+            }
+
         } else {
             Log.e("MainActivity.kt", "Error logging in " + response?.error?.errorCode)
         }
