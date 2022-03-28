@@ -57,9 +57,9 @@ class IncidentUnitTest {
 
     private fun givenViewModelIsInitializedWithMockData() {
         val incidents = ArrayList<Incident>()
-        incidents.add(Incident(stateId = 40, stateName = "Oklahoma", caseId = "400132", countyId = 1, countyName = "Adair", latitude = "35.64110000", longitude = "-94.678300000"))
-        incidents.add(Incident(stateId = 40, stateName = "Oklahoma", caseId = "400429", countyId = 1, countyName = "Adair", latitude = "35.98840000", longitude = "-94.655000000"))
-        incidents.add(Incident(stateId = 40, stateName = "Oklahoma", caseId = "400434", countyId = 1, countyName = "Adair", latitude = "35.82660000", longitude = "-94.613000000"))
+        incidents.add(Incident(incidentId = "1", stateId = 40, stateName = "Oklahoma", caseId = "400132", countyId = 1, countyName = "Adair", latitude = "35.64110000", longitude = "-94.678300000"))
+        incidents.add(Incident(incidentId = "2", stateId = 40, stateName = "Oklahoma", caseId = "400429", countyId = 1, countyName = "Adair", latitude = "35.98840000", longitude = "-94.655000000"))
+        incidents.add(Incident(incidentId = "3", stateId = 40, stateName = "Oklahoma", caseId = "400434", countyId = 1, countyName = "Adair", latitude = "35.82660000", longitude = "-94.613000000"))
 
         coEvery { mockIncidentService.fetchIncidents(2019, 2020, 40, 1) } returns incidents
 
