@@ -12,77 +12,77 @@ import com.ucmobiledevelopment.freeways.service.IIncidentService
 import com.ucmobiledevelopment.freeways.service.IncidentService
 import kotlinx.coroutines.launch
 
-class MainViewModel(var incidentService : IIncidentService = IncidentService()) : ViewModel(){
-    internal val NEW_INCIDENT = "New Incident"
-    var incidents : MutableLiveData<List<Incident>> = MutableLiveData<List<Incident>>()
-    var user : User? = null
+
+class MainViewModel(var incidentService: IIncidentService = IncidentService()) : ViewModel() {
+    private val NEW_INCIDENT = "New Incident"
+    var incidents: MutableLiveData<List<Incident>> = MutableLiveData<List<Incident>>()
+    var user: User? = null
 
     private lateinit var firestore: FirebaseFirestore
 
-    init{
+    init {
         firestore = FirebaseFirestore.getInstance()
         firestore.firestoreSettings = FirebaseFirestoreSettings.Builder().build()
     }
 
     fun listenToIncidents() {
-        user?.let {
-                user ->
-            firestore.collection("users").document(user.uid).collection("incidents").addSnapshotListener {
-                    snapshot, e ->
-                // handle the error if there is one, and then return
-                if (e != null) {
-                    Log.w("Listen failed", e)
-                    return@addSnapshotListener
-                }
-                // if we reached this point , there was not an error
-                snapshot?.let {
-                    val allIncidents = ArrayList<Incident>()
-                    allIncidents.add(Incident(caseId = NEW_INCIDENT))
-                    val documents = snapshot.documents
-                    documents.forEach {
-                        val incident = it.toObject(Incident::class.java)
-                        incident?.let {
-                            allIncidents.add(it)
-                        }
+        user?.let { user ->
+            firestore.collection("users").document(user.uid).collection("incidents")
+                .addSnapshotListener { snapshot, e ->
+                    // handle the error if there is one, and then return
+                    if (e != null) {
+                        Log.w("Listen failed", e)
+                        return@addSnapshotListener
                     }
-                    incidents.value = allIncidents
+                    // if we reached this point , there was not an error
+                    snapshot?.let {
+                        val allIncidents = ArrayList<Incident>()
+                        allIncidents.add(Incident(incidentId = "1", caseId = NEW_INCIDENT))
+                        val documents = snapshot.documents
+                        documents.forEach { documentSnapshot ->
+                            val incident = documentSnapshot.toObject(Incident::class.java)
+                            incident?.let {
+                                allIncidents.add(it)
+                            }
+                        }
+                        incidents.value = allIncidents
+                    }
                 }
-            }
         }
 
     }
 
-    fun fetchIncidents(fromCaseYear: Int, toCaseYear: Int, state: Int, county: Int){
+    fun fetchIncidents(fromCaseYear: Int, toCaseYear: Int, state: Int, county: Int) {
         viewModelScope.launch {
-           var innerIncidents = incidentService.fetchIncidents(fromCaseYear, toCaseYear, state, county)
+            val innerIncidents =
+                incidentService.fetchIncidents(fromCaseYear, toCaseYear, state, county)
             incidents.postValue(innerIncidents)
         }
     }
 
     fun saveIncident(incident: Incident) {
-        user?.let {
-            user ->
-            val document = if (incident.incidentId == null || incident.incidentId.isEmpty()) {
+        user?.let { user ->
+            val document = if (incident.incidentId.isEmpty()) {
                 // Create a new incident
                 firestore.collection("users").document(user.uid).collection("incidents").document()
             } else {
                 // Update an existing incident
-                firestore.collection("users").document(user.uid).collection("incidents").document(incident.incidentId)
+                firestore.collection("users").document(user.uid).collection("incidents")
+                    .document(incident.incidentId)
             }
             incident.incidentId = document.id
             val handle = document.set(incident)
             handle.addOnSuccessListener { Log.d("Firebase", "Document saved") }
-            handle.addOnFailureListener { Log.e("Firebase", "Save failed $it") }
+            handle.addOnFailureListener { Log.e("Firebase", "Save failed $user") }
         }
 
     }
 
     fun saveUser() {
-        user?.let {
-            user ->
+        user?.let { user ->
             val handle = firestore.collection("users").document(user.uid).set(user)
             handle.addOnSuccessListener { Log.d("Firebase", "User document saved") }
-            handle.addOnFailureListener { Log.e("Firebase", "User save failed $it") }
+            handle.addOnFailureListener { Log.e("Firebase", "User save failed $user") }
         }
 
     }

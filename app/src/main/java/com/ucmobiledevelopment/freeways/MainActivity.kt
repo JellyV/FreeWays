@@ -53,7 +53,7 @@ class MainActivity : ComponentActivity() {
     private lateinit var currentImagePath: String
     private var firebaseUser: FirebaseUser? = FirebaseAuth.getInstance().currentUser
     private var selectedIncident: Incident? = null
-    private val viewModel : MainViewModel by viewModel<MainViewModel>()
+    private val viewModel: MainViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,17 +78,19 @@ class MainActivity : ComponentActivity() {
                 val context = LocalContext.current
 
                 Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-                    Row(Modifier
-                        .padding(5.dp),
+                    Row(
+                        Modifier
+                            .padding(5.dp),
                         horizontalArrangement = Arrangement.Center,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        ExtendedFloatingActionButton (
-                            text = {  Text(text = "Report Incident") },
-                            onClick = { val intent = Intent(context, ReportIncidentActivity::class.java)
+                        ExtendedFloatingActionButton(
+                            text = { Text(text = "Report Incident") },
+                            onClick = {
+                                val intent = Intent(context, ReportIncidentActivity::class.java)
                                 context.startActivity(intent)
                             },
-                            icon = { Icon(Icons.Filled.Add,"@drawable/plus_icon") },
+                            icon = { Icon(Icons.Filled.Add, "@drawable/plus_icon") },
                             backgroundColor = Purple500
                         )
                     }
@@ -100,7 +102,7 @@ class MainActivity : ComponentActivity() {
 
 
     @Composable
-    fun IncidentInfo(name: String, incidents : List<Incident> = ArrayList<Incident>()) {
+    fun IncidentInfo(name: String, incidents: List<Incident> = ArrayList<Incident>()) {
         var inStateName by remember { mutableStateOf("") }
         var inCountyName by remember { mutableStateOf("") }
         var inCityName by remember { mutableStateOf("") }
@@ -163,9 +165,9 @@ class MainActivity : ComponentActivity() {
                 )
                 Button(
                     onClick = {
-                        var incidentInfo = Incident().apply {
+                        val incidentInfo = Incident("1").apply {
 
-                            stateId =  0
+                            stateId = 0
                             stateName = inStateName
                             countyId = 0
                             countyName = inCountyName
@@ -312,8 +314,8 @@ class MainActivity : ComponentActivity() {
 
     private val signInLauncher = registerForActivityResult(
         FirebaseAuthUIActivityResultContract()
-    ){
-        res -> this.signInResult(res)
+    ) { res ->
+        this.signInResult(res)
     }
 
     private fun signInResult(result: FirebaseAuthUIAuthenticationResult) {
@@ -321,7 +323,7 @@ class MainActivity : ComponentActivity() {
         if (result.resultCode == RESULT_OK) {
             firebaseUser = FirebaseAuth.getInstance().currentUser
             firebaseUser?.let {
-                val user = com.ucmobiledevelopment.freeways.dto.User(it.uid, it.displayName)
+                val user = User(it.uid, it.displayName)
                 viewModel.user = user
                 viewModel.saveUser()
                 viewModel.listenToIncidents()

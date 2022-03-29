@@ -1,28 +1,13 @@
 package com.ucmobiledevelopment.freeways
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.Observer
 import com.ucmobiledevelopment.freeways.dto.Incident
-import com.ucmobiledevelopment.freeways.dto.IncidentDTO
-import com.ucmobiledevelopment.freeways.dto.IncidentListDTO
 import com.ucmobiledevelopment.freeways.service.IncidentService
-import io.mockk.MockKAnnotations
-import io.mockk.coEvery
-import io.mockk.impl.annotations.MockK
 import junit.framework.Assert.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.newSingleThreadContext
-import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
-import kotlinx.coroutines.test.setMain
-import org.junit.After
-import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TestRule
-import java.util.*
-import java.util.concurrent.CountDownLatch
-import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
 
 class IncidentTests {
@@ -30,12 +15,7 @@ class IncidentTests {
     var rule: TestRule = InstantTaskExecutorRule()
 
     lateinit var incidentService : IncidentService
-    //var allIncidents : IncidentListDTO? = IncidentListDTO(Results = ArrayList<List<IncidentDTO>>())
     var allIncidents: List<Incident>? = ArrayList<Incident>()
-
-
-
-
 
 
     @Test
@@ -58,7 +38,7 @@ class IncidentTests {
         assertTrue(allIncidents!!.isNotEmpty())
        var hasCaseId400434 = false
        allIncidents!!.forEach {
-             if(it.caseId.equals("400434")){
+             if(it.caseId == "400434"){
                hasCaseId400434 = true
            }
        }
