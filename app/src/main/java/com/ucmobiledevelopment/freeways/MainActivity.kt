@@ -276,10 +276,10 @@ class MainActivity : ComponentActivity() {
 
     fun hasCameraPermission() = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
     fun hasExternalStoragePermission() = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-        }
 
 
-    }
+
+
 
     @Composable
     fun Greeting(name: String) {
@@ -333,5 +333,6 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+
 
 
