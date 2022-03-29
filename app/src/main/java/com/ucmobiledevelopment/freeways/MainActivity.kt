@@ -161,48 +161,58 @@ class MainActivity : ComponentActivity() {
                     label = { Text(stringResource(R.string.vehiclesInvolved)) },
                     modifier = Modifier.fillMaxWidth()
                 )
-                Button(
-                    onClick = {
-                        var incidentInfo = Incident().apply {
+                Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center)
+                {
+                    Row() {
+                        Button(
+                            onClick = {
+                                var incidentInfo = Incident().apply {
 
-                            stateId =  0
-                            stateName = inStateName
-                            countyId = 0
-                            countyName = inCountyName
-                            cityName = inCityName
-                            latitude = inLatitude
-                            longitude = inLongitude
-                            way1 = inWay1
-                            way2 = inWay2
-                            vehiclesInvolved = 0
+                                    stateId =  0
+                                    stateName = inStateName
+                                    countyId = 0
+                                    countyName = inCountyName
+                                    cityName = inCityName
+                                    latitude = inLatitude
+                                    longitude = inLongitude
+                                    way1 = inWay1
+                                    way2 = inWay2
+                                    vehiclesInvolved = 0
 
+                                }
+                                viewModel.saveIncident(incidentInfo)
+                                Toast.makeText(
+                                    context,
+                                    "$inCityName $inCountyName $inStateName $inLatitude $inLongitude $inWay1 $inWay2 $inVehiclesInvolved",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                            }
+                        )
+
+                        {
+                            Text(text = "Save")
                         }
-                        viewModel.saveIncident(incidentInfo)
-                        Toast.makeText(
-                            context,
-                            "$inCityName $inCountyName $inStateName $inLatitude $inLongitude $inWay1 $inWay2 $inVehiclesInvolved",
-                            Toast.LENGTH_LONG
-                        ).show()
-                    }
-                ) {
-                    Text(text = "Save")
+
+                        Button(
+                            onClick = {
+                                signIn()
+                            }
+                        ) {
+                            Text(text = "Logon")
+                        }
+                        Button(
+                            onClick = {
+                                takePhoto()
+                            }
+                        ) {
+                            Text(text = "Photo")
+                        }
                 }
 
-                Button(
-                    onClick = {
-                        signIn()
-                    }
-                ) {
-                    Text(text = "Logon")
                 }
+
             }
-           Button(
-                onClick = {
-                    takePhoto()
-                }
-            ) {
-                Text(text = "Photo")
-            }
+
         }
     }
 
