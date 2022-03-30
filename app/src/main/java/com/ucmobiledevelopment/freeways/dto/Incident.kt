@@ -1,7 +1,7 @@
 package com.ucmobiledevelopment.freeways.dto
 
 data class Incident(
-    var incidentId: String = "",
+    var incidentId: String,
     var caseId: String = "",
     var stateId: Int = 0,
     var stateName: String = "",

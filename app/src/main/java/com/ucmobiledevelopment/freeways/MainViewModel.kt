@@ -37,12 +37,14 @@ class MainViewModel(var incidentService : IIncidentService = IncidentService()) 
                 // if we reached this point , there was not an error
                 snapshot?.let {
                     val allIncidents = ArrayList<Incident>()
-                    allIncidents.add(Incident(caseId = NEW_INCIDENT))
+                    allIncidents.add(Incident(incidentId = "1", caseId = NEW_INCIDENT))
                     val documents = snapshot.documents
                     documents.forEach {
-                        val incident = it.toObject(Incident::class.java)
+                        docSnap ->
+                        val incident = docSnap.toObject(Incident::class.java)
                         incident?.let {
-                            allIncidents.add(it)
+                            incident ->
+                            allIncidents.add(incident)
                         }
                     }
                     incidents.value = allIncidents
@@ -72,7 +74,7 @@ class MainViewModel(var incidentService : IIncidentService = IncidentService()) 
             incident.incidentId = document.id
             val handle = document.set(incident)
             handle.addOnSuccessListener { Log.d("Firebase", "Document saved") }
-            handle.addOnFailureListener { Log.e("Firebase", "Save failed $it") }
+            handle.addOnFailureListener { Log.e("Firebase", "Save failed $user") }
         }
 
     }
@@ -82,7 +84,7 @@ class MainViewModel(var incidentService : IIncidentService = IncidentService()) 
             user ->
             val handle = firestore.collection("users").document(user.uid).set(user)
             handle.addOnSuccessListener { Log.d("Firebase", "User document saved") }
-            handle.addOnFailureListener { Log.e("Firebase", "User save failed $it") }
+            handle.addOnFailureListener { Log.e("Firebase", "User save failed $user") }
         }
 
     }
