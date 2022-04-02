@@ -13,14 +13,13 @@ import com.ucmobiledevelopment.freeways.service.IncidentService
 import kotlinx.coroutines.launch
 
 class MainViewModel(var incidentService : IIncidentService = IncidentService()) : ViewModel(){
-    internal val NEW_INCIDENT = "New Incident"
+    private val NEW_INCIDENT = "New Incident"
     var incidents : MutableLiveData<List<Incident>> = MutableLiveData<List<Incident>>()
     var user : User? = null
 
-    private lateinit var firestore: FirebaseFirestore
+    private var firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
 
     init{
-        firestore = FirebaseFirestore.getInstance()
         firestore.firestoreSettings = FirebaseFirestoreSettings.Builder().build()
     }
 
