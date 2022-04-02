@@ -32,7 +32,7 @@ class IncidentService : IIncidentService {
             if (result != null) {
                 if(result.Results[0].isNotEmpty()){
                     result.Results[0].forEach{
-                        val newIncident: Incident = Incident()
+                        val newIncident = Incident()
 
                         newIncident.cityName = it.CITYNAME ?: ""
                         newIncident.countyId = if(it.COUNTY != null) it.COUNTY.toInt() else 0
@@ -40,7 +40,7 @@ class IncidentService : IIncidentService {
                         newIncident.stateId = if(it.STATE != null) it.STATE.toInt() else 0
                         newIncident.stateName = it.STATENAME ?: ""
                         newIncident.latitude = it.LATITUDE ?: ""
-                        newIncident.longitude = it.LONGITUD ?: ""
+                        newIncident.longitude = it.LONGITUDE ?: ""
                         newIncident.caseId =  it.ST_CASE ?: ""
                         newIncident.way1 = it.TWAY_ID ?: ""
                         newIncident.way2 = it.TWAY_ID2 ?: ""
