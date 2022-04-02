@@ -58,7 +58,7 @@ class IncidentTests {
         assertTrue(allIncidents!!.isNotEmpty())
        var hasCaseId400434 = false
        allIncidents!!.forEach {
-             if(it.caseId.equals("400434")){
+             if(it.caseId == "400434"){
                hasCaseId400434 = true
            }
        }
