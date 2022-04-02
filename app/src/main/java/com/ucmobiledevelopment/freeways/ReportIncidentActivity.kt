@@ -18,7 +18,7 @@ class ReportIncidentActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            FreeWaysTheme() {
+            FreeWaysTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
@@ -28,7 +28,7 @@ class ReportIncidentActivity : ComponentActivity() {
                 }
                 val context = LocalContext.current
                 ExtendedFloatingActionButton (
-                    text = {  Text(text = "Back") },
+                    text = { Text(text = "Back") },
                     onClick = { val intent = Intent(context, MainActivity::class.java)
                                 context.startActivity(intent)
                               },
