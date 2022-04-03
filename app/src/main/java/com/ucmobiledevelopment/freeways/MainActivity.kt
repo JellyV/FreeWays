@@ -114,108 +114,110 @@ class MainActivity : ComponentActivity() {
         var inVehiclesInvolved by remember { mutableStateOf("") }
         val context = LocalContext.current
 
-        Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-            Column {
-                OutlinedTextField(
-                    value = inStateName,
-                    onValueChange = { inStateName = it },
-                    label = { Text(stringResource(R.string.stateName)) },
-                    modifier = Modifier.fillMaxWidth()
-                )
-                OutlinedTextField(
-                    value = inCountyName,
-                    onValueChange = { inCountyName = it },
-                    label = { Text(stringResource(R.string.countyName)) },
-                    modifier = Modifier.fillMaxWidth()
-                )
-                OutlinedTextField(
-                    value = inCityName,
-                    onValueChange = { inCityName = it },
-                    label = { Text(stringResource(R.string.cityName)) },
-                    modifier = Modifier.fillMaxWidth()
-                )
-                OutlinedTextField(
-                    value = inLatitude,
-                    onValueChange = { inLatitude = it },
-                    label = { Text(stringResource(R.string.latitude)) },
-                    modifier = Modifier.fillMaxWidth()
-                )
-                OutlinedTextField(
-                    value = inLongitude,
-                    onValueChange = { inLongitude = it },
-                    label = { Text(stringResource(R.string.longitude)) },
-                    modifier = Modifier.fillMaxWidth()
-                )
-                OutlinedTextField(
-                    value = inWay1,
-                    onValueChange = { inWay1 = it },
-                    label = { Text(stringResource(R.string.way1)) },
-                    modifier = Modifier.fillMaxWidth()
-                )
-                OutlinedTextField(
-                    value = inWay2,
-                    onValueChange = { inWay2 = it },
-                    label = { Text(stringResource(R.string.way2)) },
-                    modifier = Modifier.fillMaxWidth()
-                )
-                OutlinedTextField(
-                    value = inVehiclesInvolved,
-                    onValueChange = { inVehiclesInvolved = it },
-                    label = { Text(stringResource(R.string.vehiclesInvolved)) },
-                    modifier = Modifier.fillMaxWidth()
-                )
-                Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center)
-                {
-                    Row() {
-                        Button(
-                            onClick = {
-                                var incidentInfo = Incident().apply {
+        Card {
+            Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+                Column {
+                    OutlinedTextField(
+                        value = inStateName,
+                        onValueChange = { inStateName = it },
+                        label = { Text(stringResource(R.string.stateName)) },
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    OutlinedTextField(
+                        value = inCountyName,
+                        onValueChange = { inCountyName = it },
+                        label = { Text(stringResource(R.string.countyName)) },
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    OutlinedTextField(
+                        value = inCityName,
+                        onValueChange = { inCityName = it },
+                        label = { Text(stringResource(R.string.cityName)) },
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    OutlinedTextField(
+                        value = inLatitude,
+                        onValueChange = { inLatitude = it },
+                        label = { Text(stringResource(R.string.latitude)) },
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    OutlinedTextField(
+                        value = inLongitude,
+                        onValueChange = { inLongitude = it },
+                        label = { Text(stringResource(R.string.longitude)) },
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    OutlinedTextField(
+                        value = inWay1,
+                        onValueChange = { inWay1 = it },
+                        label = { Text(stringResource(R.string.way1)) },
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    OutlinedTextField(
+                        value = inWay2,
+                        onValueChange = { inWay2 = it },
+                        label = { Text(stringResource(R.string.way2)) },
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    OutlinedTextField(
+                        value = inVehiclesInvolved,
+                        onValueChange = { inVehiclesInvolved = it },
+                        label = { Text(stringResource(R.string.vehiclesInvolved)) },
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center)
+                    {
+                        Row{
+                            Button(
+                                onClick = {
+                                    val incidentInfo = Incident().apply {
 
-                                    stateId =  0
-                                    stateName = inStateName
-                                    countyId = 0
-                                    countyName = inCountyName
-                                    cityName = inCityName
-                                    latitude = inLatitude
-                                    longitude = inLongitude
-                                    way1 = inWay1
-                                    way2 = inWay2
-                                    vehiclesInvolved = 0
+                                        stateId = 0
+                                        stateName = inStateName
+                                        countyId = 0
+                                        countyName = inCountyName
+                                        cityName = inCityName
+                                        latitude = inLatitude
+                                        longitude = inLongitude
+                                        way1 = inWay1
+                                        way2 = inWay2
+                                        vehiclesInvolved = 0
 
+                                    }
+                                    viewModel.saveIncident(incidentInfo)
+                                    Toast.makeText(
+                                        context,
+                                        "$inCityName $inCountyName $inStateName $inLatitude $inLongitude $inWay1 $inWay2 $inVehiclesInvolved",
+                                        Toast.LENGTH_LONG
+                                    ).show()
                                 }
-                                viewModel.saveIncident(incidentInfo)
-                                Toast.makeText(
-                                    context,
-                                    "$inCityName $inCountyName $inStateName $inLatitude $inLongitude $inWay1 $inWay2 $inVehiclesInvolved",
-                                    Toast.LENGTH_LONG
-                                ).show()
-                            }
-                        )
+                            )
 
-                        {
-                            Text(text = "Save")
-                        }
+                            {
+                                Text(text = "Save")
+                            }
 
-                        Button(
-                            onClick = {
-                                signIn()
+                            Button(
+                                onClick = {
+                                    signIn()
+                                }
+                            ) {
+                                Text(text = "Log In")
                             }
-                        ) {
-                            Text(text = "Logon")
-                        }
-                        Button(
-                            onClick = {
-                                takePhoto()
+                            Button(
+                                onClick = {
+                                    takePhoto()
+                                }
+                            ) {
+                                Text(text = "Photo")
                             }
-                        ) {
-                            Text(text = "Photo")
                         }
-                }
-          //TO DO: Add a button to display the image          //AsyncImage(model = strUri, contentDescription= "Incident Image")
+                        //TO DO: Add a button to display the image          //AsyncImage(model = strUri, contentDescription= "Incident Image")
+                    }
+
                 }
 
             }
-
         }
     }
 
@@ -237,7 +239,7 @@ class MainActivity : ComponentActivity() {
         resultsMap ->
         var permissionGranted = false
         resultsMap.forEach {
-            if (it.value == true) {
+            if (it.value) {
                 permissionGranted = it.value
             }
             else {
