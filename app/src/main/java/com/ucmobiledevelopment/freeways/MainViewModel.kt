@@ -60,7 +60,7 @@ class MainViewModel(var incidentService : IIncidentService = IncidentService()) 
 
     fun fetchIncidents(fromCaseYear: Int, toCaseYear: Int, state: Int, county: Int){
         viewModelScope.launch {
-           var innerIncidents = incidentService.fetchIncidents(fromCaseYear, toCaseYear, state, county)
+           val innerIncidents = incidentService.fetchIncidents(fromCaseYear, toCaseYear, state, county)
             incidents.postValue(innerIncidents)
         }
     }
@@ -100,7 +100,7 @@ class MainViewModel(var incidentService : IIncidentService = IncidentService()) 
     fun uploadPhotos() {
         photos.forEach {
             photo ->
-            var uri = Uri.parse(photo.localUri)
+            val uri = Uri.parse(photo.localUri)
             val imageRef = storageReference.child("images/${user?.uid}/${uri.lastPathSegment}")
             val uploadTask = imageRef.putFile(uri)
             uploadTask.addOnSuccessListener {
