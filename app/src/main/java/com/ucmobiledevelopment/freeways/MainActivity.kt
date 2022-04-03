@@ -290,8 +290,8 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    fun hasCameraPermission() = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
-    fun hasExternalStoragePermission() = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    private fun hasCameraPermission() = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+    private fun hasExternalStoragePermission() = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
 
 
 
@@ -337,7 +337,7 @@ class MainActivity : ComponentActivity() {
         if (result.resultCode == RESULT_OK) {
             firebaseUser = FirebaseAuth.getInstance().currentUser
             firebaseUser?.let {
-                val user = com.ucmobiledevelopment.freeways.dto.User(it.uid, it.displayName)
+                val user = User(it.uid, it.displayName)
                 viewModel.user = user
                 viewModel.saveUser()
                 viewModel.listenToIncidents()
