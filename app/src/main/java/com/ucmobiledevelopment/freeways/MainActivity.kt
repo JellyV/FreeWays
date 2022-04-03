@@ -33,12 +33,14 @@ import androidx.compose.ui.window.PopupProperties
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.ucmobiledevelopment.freeways.dto.Incident
+import com.ucmobiledevelopment.freeways.dto.Photo
 import com.ucmobiledevelopment.freeways.dto.User
 import com.ucmobiledevelopment.freeways.ui.theme.FreeWaysTheme
 import com.ucmobiledevelopment.freeways.ui.theme.Purple500
@@ -54,6 +56,7 @@ class MainActivity : ComponentActivity() {
     private var firebaseUser: FirebaseUser? = FirebaseAuth.getInstance().currentUser
     private var selectedIncident: Incident? = null
     private val viewModel : MainViewModel by viewModel<MainViewModel>()
+    private var strUri by mutableStateOf("")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -208,7 +211,7 @@ class MainActivity : ComponentActivity() {
                             Text(text = "Photo")
                         }
                 }
-
+          //TO DO: Add a button to display the image          //AsyncImage(model = strUri, contentDescription= "Incident Image")
                 }
 
             }
@@ -278,6 +281,9 @@ class MainActivity : ComponentActivity() {
         success ->
         if (success) {
             Log.i(TAG, "Image Location: $uri")
+            strUri = uri.toString()
+            val photo = Photo(localUri = uri.toString())
+            viewModel.photos.add(photo)
         }
         else {
             Log.e(TAG, "Image not saved. $uri")
