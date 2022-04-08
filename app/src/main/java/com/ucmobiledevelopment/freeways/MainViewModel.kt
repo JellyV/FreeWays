@@ -79,7 +79,7 @@ class MainViewModel(var incidentService : IIncidentService = IncidentService()) 
             val handle = document.set(incident)
             handle.addOnSuccessListener { Log.d("Firebase", "Document saved")
             if (photos.isNotEmpty()) {
-                uploadPhotos()
+                uploadPhotos(incident)
             }
             }
             handle.addOnFailureListener { Log.e("Firebase", "Save failed $it") }
@@ -96,7 +96,7 @@ class MainViewModel(var incidentService : IIncidentService = IncidentService()) 
 
     }
 
-    fun uploadPhotos() {
+    fun uploadPhotos(incident: Incident) {
         photos.forEach {
             photo ->
             var uri = Uri.parse(photo.localUri)
@@ -108,7 +108,7 @@ class MainViewModel(var incidentService : IIncidentService = IncidentService()) 
                 downloadUrl.addOnSuccessListener { 
                     remoteUri ->
                     photo.remoteUri = remoteUri.toString()
-                    //updatePhotoDatabase(photo)
+                    updatePhotoDatabase(photo, incident)
                 }
             }
             uploadTask.addOnFailureListener {
@@ -118,21 +118,21 @@ class MainViewModel(var incidentService : IIncidentService = IncidentService()) 
     }
 
     // TO DO: We will add this after the incident update functionality is created
-//    fun updatePhotoDatabase(photo: Photo) {
-//        user?.let {
-//            user ->
-//            var photoCollection = firestore.collection("users").document(user.uid).collection("incidents").document(incident.incidentId).collection("photos")
-//            var handle = photoCollection.add(photo)
-//            handle.addOnSuccessListener {
-//                Log.i(TAG, "Successfully updated photo metadata")
-//                photo.id = it.id
-//                firestore.collection("users").document(user.uid).collection("incidents").document(incident.incidentId).collection("photos").document(photo.id).set(photo)
-//            }
-//            handle.addOnFailureListener {
-//                Log.e(TAG, "Error updating photo data: ${it.message}")
-//            }
-//        }
-//    }
+    fun updatePhotoDatabase(photo: Photo, incident: Incident) {
+        user?.let {
+            user ->
+            var photoCollection = firestore.collection("users").document(user.uid).collection("incidents").document(incident.incidentId).collection("photos")
+            var handle = photoCollection.add(photo)
+            handle.addOnSuccessListener {
+                Log.i(TAG, "Successfully updated photo metadata")
+                photo.id = it.id
+                firestore.collection("users").document(user.uid).collection("incidents").document(incident.incidentId).collection("photos").document(photo.id).set(photo)
+            }
+            handle.addOnFailureListener {
+                Log.e(TAG, "Error updating photo data: ${it.message}")
+            }
+        }
+    }
 
 
 }
