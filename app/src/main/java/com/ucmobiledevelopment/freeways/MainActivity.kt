@@ -47,7 +47,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background,
                 ) {
-
+                    IncidentMap()
                 }
                 val context = LocalContext.current
                 Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
