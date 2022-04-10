@@ -20,6 +20,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -48,7 +49,6 @@ class MainActivity : ComponentActivity() {
                 ) {
 
                 }
-
                 val context = LocalContext.current
                 Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
                     Row(Modifier
@@ -62,7 +62,8 @@ class MainActivity : ComponentActivity() {
                                 context.startActivity(intent)
                             },
                             icon = { Icon(Icons.Filled.Add,"@drawable/plus_icon") },
-                            backgroundColor = Purple500
+                            backgroundColor = Purple500,
+                            contentColor = Color.White
                         )
                     }
                 }
@@ -92,4 +93,15 @@ class MainActivity : ComponentActivity() {
         applicationViewModel.startLocationUpdates()
     }
 
+    @Composable
+    private fun IncidentMap() {
+        val cincinnati = LatLng(39.74, -84.51)
+        val cameraPosition = rememberCameraPositionState {
+            position = CameraPosition.fromLatLngZoom(cincinnati, 10f)
+        }
+
+        GoogleMap(modifier = Modifier.fillMaxSize(), cameraPositionState = cameraPosition) {
+            Marker (position = cincinnati, title = "Cincinnati", snippet = "Marker in Cincinnati")
+        }
+    }
 }
