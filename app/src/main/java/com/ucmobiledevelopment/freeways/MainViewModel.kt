@@ -3,11 +3,14 @@ package com.ucmobiledevelopment.freeways
 import android.content.ContentValues.TAG
 import android.net.Uri
 import android.util.Log
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
+import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.storage.FirebaseStorage
 import com.ucmobiledevelopment.freeways.dto.Incident
 import com.ucmobiledevelopment.freeways.dto.Photo
@@ -17,10 +20,12 @@ import com.ucmobiledevelopment.freeways.service.IncidentService
 import kotlinx.coroutines.launch
 
 class MainViewModel(var incidentService : IIncidentService = IncidentService()) : ViewModel(){
+    val myIncidents: ArrayList<Incident> by mutableStateOf(ArrayList<Incident>())
     val photos: ArrayList<Photo> = ArrayList<Photo>()
     private val NEW_INCIDENT = "New Incident"
     var incidents : MutableLiveData<List<Incident>> = MutableLiveData<List<Incident>>()
     var user : User? = null
+    val eventIncidents : MutableLiveData<List<Incident>> = MutableLiveData<List<Incident>>()
 
     private var firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
     private var storageReference = FirebaseStorage.getInstance().getReference()
@@ -135,7 +140,28 @@ class MainViewModel(var incidentService : IIncidentService = IncidentService()) 
     }
 
     fun fetchMyIncidents() {
-        TODO("Not yet implemented")
+        //myIncidents.clear()
+        user?.let{
+            user ->
+            var myIncidentsCollection = firestore.collection("users").document(user.uid).collection("incidents")
+            var myIncidentsListener = myIncidentsCollection.addSnapshotListener {
+                querySnapshot, firebaseFirestoreException ->
+                querySnapshot?.let {
+                    querySnapshot ->
+                    var documents = querySnapshot.documents
+                    var inIncidents = ArrayList<Incident>()
+                    documents?.forEach {
+                        var incident = it.toObject(Incident::class.java)
+                        incident?.let{
+                            incident ->
+                            inIncidents.add(incident)
+                        }
+                    }
+                    eventIncidents.value = inIncidents
+                }
+            }
+        }
+
     }
 
 
