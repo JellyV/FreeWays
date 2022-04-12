@@ -134,5 +134,9 @@ class MainViewModel(var incidentService : IIncidentService = IncidentService()) 
         }
     }
 
+    fun fetchMyIncidents() {
+        TODO("Not yet implemented")
+    }
+
 
 }

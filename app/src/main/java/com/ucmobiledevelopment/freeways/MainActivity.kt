@@ -51,21 +51,46 @@ class MainActivity : ComponentActivity() {
                 }
                 val context = LocalContext.current
                 Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-                    Row(Modifier
-                        .padding(5.dp),
-                        horizontalArrangement = Arrangement.Center,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        ExtendedFloatingActionButton (
-                            text = {  Text(text = "Report Incident") },
-                            onClick = { val intent = Intent(context, ReportIncidentActivity::class.java)
-                                context.startActivity(intent)
-                            },
-                            icon = { Icon(Icons.Filled.Add,"@drawable/plus_icon") },
-                            backgroundColor = Purple500,
-                            contentColor = Color.White
-                        )
+
+                    Column{
+                        Row(Modifier
+                            .padding(5.dp),
+                            horizontalArrangement = Arrangement.Center,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            ExtendedFloatingActionButton (
+                                text = {  Text(text = "Report Incident") },
+                                onClick = { val intent = Intent(context, ReportIncidentActivity::class.java)
+                                    context.startActivity(intent)
+                                },
+                                icon = { Icon(Icons.Filled.Add,"@drawable/plus_icon") },
+                                backgroundColor = Purple500,
+                                contentColor = Color.White
+                            )
+                        }
+
+
+
+
+
+
+                        Row(Modifier
+                            .padding(5.dp),
+                            horizontalArrangement = Arrangement.Center,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            ExtendedFloatingActionButton (
+                                text = {  Text(text = "My Incidents") },
+                                onClick = { val intent = Intent(context, MyIncidentsListActivity::class.java)
+                                    context.startActivity(intent)
+                                },
+                                icon = { Icon(Icons.Filled.Add,"@drawable/plus_icon") },
+                                backgroundColor = Purple500,
+                                contentColor = Color.White
+                            )
+                        }
                     }
+
                 }
             }
             prepLocationUpdates()
