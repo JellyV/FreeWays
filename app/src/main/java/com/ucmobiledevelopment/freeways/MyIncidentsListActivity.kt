@@ -1,6 +1,9 @@
 package com.ucmobiledevelopment.freeways
 
+import android.graphics.drawable.Drawable
+import android.graphics.drawable.VectorDrawable
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
@@ -23,11 +26,13 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.SnackbarDefaults.backgroundColor
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Menu
+
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import com.ucmobiledevelopment.freeways.ui.theme.Purple200
 import com.ucmobiledevelopment.freeways.ui.theme.Purple500
-import com.ucmobiledevelopment.freeways.ui.theme.Purple700
 
 class MyIncidentsListActivity : ComponentActivity() {
 
@@ -88,6 +93,7 @@ class MyIncidentsListActivity : ComponentActivity() {
 
     @Composable
     fun EventListItem(incident: Incident){
+        val context = LocalContext.current
         Card(
             modifier = Modifier
                 .padding(horizontal = 4.dp, vertical = 10.dp)
@@ -99,19 +105,64 @@ class MyIncidentsListActivity : ComponentActivity() {
             border = BorderStroke(1.dp, Purple500)
         ){
             Row{
-                Column(Modifier.padding(horizontal = 10.dp, vertical = 5.dp)) {
-                    Text(text = "${incident.cityName}, ${incident.stateName} (${incident.countyName} county)", style = typography.h6)
 
+                Column(
+                    modifier = Modifier
+                        .padding(horizontal = 10.dp, vertical = 5.dp)
+                        .weight(8f)
+                ) {
+                    Text(text = "${incident.cityName}, ${incident.stateName}", style = typography.h6)
+                    Text(text = "${incident.countyName} county", style = typography.h6)
                     Text(text = "Vehicles Involved: ${incident.vehiclesInvolved}", style = typography.body1)
                     Text(text = "Way 1: ${incident.way1}", style = typography.body1)
                     Text(text = "Way 2: ${incident.way2}", style = typography.body1)
                     Text(text = "Location: (${incident.latitude}, ${incident.longitude})", style = typography.body1)
                     Text(text = "# ${incident.incidentId}", style = typography.caption)
                 }
+
+
+                Column(
+                    Modifier.weight(2f)
+                ){
+                    Button (
+                        modifier = Modifier.padding(top = 5.dp),
+                        onClick = {
+                            TODO("Open incident details page (intent)")
+                        }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Filled.Menu,
+                            contentDescription = "Details",
+                            modifier = Modifier.padding(end = 5.dp)
+                        )
+                    }
+
+                    Button (
+                        modifier = Modifier.padding(top = 10.dp),
+                        onClick = {
+                            delete(incident)
+                            Toast.makeText(
+                                context,
+                                "incident deleted",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Filled.Delete,
+                            contentDescription = "Delete",
+
+                        )
+                    }
+                }
             }
         }
 
 
+    }
+
+    private fun delete(incident: Incident) {
+        viewModel.delete(incident)
     }
 
 }

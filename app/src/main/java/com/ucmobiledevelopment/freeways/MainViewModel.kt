@@ -161,5 +161,13 @@ class MainViewModel(var incidentService : IIncidentService = IncidentService()) 
 
     }
 
+    fun delete(incident: Incident) {
+        user?.let {
+            user ->
+            var myIncidentsCollection = firestore.collection("users").document(user.uid).collection("incidents")
+            myIncidentsCollection.document(incident.incidentId).delete()
+        }
+    }
+
 
 }

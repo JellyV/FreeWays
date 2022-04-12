@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.List
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -79,7 +80,7 @@ class MainActivity : ComponentActivity() {
                                 onClick = { val intent = Intent(context, MyIncidentsListActivity::class.java)
                                     context.startActivity(intent)
                                 },
-                                icon = { Icon(Icons.Filled.Add,"@drawable/plus_icon") },
+                                icon = { Icon(Icons.Filled.List,"@drawable/list_icon") },
                                 backgroundColor = Purple500,
                                 contentColor = Color.White
                             )
