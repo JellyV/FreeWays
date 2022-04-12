@@ -20,13 +20,11 @@ import com.ucmobiledevelopment.freeways.service.IncidentService
 import kotlinx.coroutines.launch
 
 class MainViewModel(var incidentService : IIncidentService = IncidentService()) : ViewModel(){
-    val myIncidents: ArrayList<Incident> by mutableStateOf(ArrayList<Incident>())
     val photos: ArrayList<Photo> = ArrayList<Photo>()
     private val NEW_INCIDENT = "New Incident"
     var incidents : MutableLiveData<List<Incident>> = MutableLiveData<List<Incident>>()
     var user : User? = null
     val eventIncidents : MutableLiveData<List<Incident>> = MutableLiveData<List<Incident>>()
-
     private var firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
     private var storageReference = FirebaseStorage.getInstance().getReference()
 
@@ -140,7 +138,6 @@ class MainViewModel(var incidentService : IIncidentService = IncidentService()) 
     }
 
     fun fetchMyIncidents() {
-        //myIncidents.clear()
         user?.let{
             user ->
             var myIncidentsCollection = firestore.collection("users").document(user.uid).collection("incidents")

@@ -69,11 +69,6 @@ class MainActivity : ComponentActivity() {
                             )
                         }
 
-
-
-
-
-
                         Row(Modifier
                             .padding(5.dp),
                             horizontalArrangement = Arrangement.Center,

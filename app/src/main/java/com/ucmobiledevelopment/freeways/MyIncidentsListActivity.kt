@@ -3,6 +3,7 @@ package com.ucmobiledevelopment.freeways
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
@@ -20,7 +21,13 @@ import com.ucmobiledevelopment.freeways.dto.User
 import com.ucmobiledevelopment.freeways.ui.theme.FreeWaysTheme
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.SnackbarDefaults.backgroundColor
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import com.ucmobiledevelopment.freeways.ui.theme.Purple200
+import com.ucmobiledevelopment.freeways.ui.theme.Purple500
+import com.ucmobiledevelopment.freeways.ui.theme.Purple700
 
 class MyIncidentsListActivity : ComponentActivity() {
 
@@ -68,7 +75,7 @@ class MyIncidentsListActivity : ComponentActivity() {
     @Composable
     private fun Events() {
         val myIncidents by viewModel.eventIncidents.observeAsState(initial = emptyList())
-        LazyColumn(contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)) {
+        LazyColumn(contentPadding = PaddingValues(horizontal = 4.dp, vertical = 5.dp)) {
             items (
                 items = myIncidents,
                 itemContent = {
@@ -81,16 +88,30 @@ class MyIncidentsListActivity : ComponentActivity() {
 
     @Composable
     fun EventListItem(incident: Incident){
-        Row{
+        Card(
+            modifier = Modifier
+                .padding(horizontal = 4.dp, vertical = 10.dp)
+                .fillMaxWidth(),
+            elevation = 8.dp,
+            backgroundColor = Color.White,
+            contentColor = contentColorFor(backgroundColor),
+            shape = RoundedCornerShape(20.dp),
+            border = BorderStroke(1.dp, Purple500)
+        ){
+            Row{
+                Column(Modifier.padding(horizontal = 10.dp, vertical = 5.dp)) {
+                    Text(text = "${incident.cityName}, ${incident.stateName} (${incident.countyName} county)", style = typography.h6)
 
-            Column {
-                Text(text = incident.cityName, style = typography.h6)
-                Text(text = incident.countyName, style = typography.caption)
-                Text(text = incident.latitude, style = typography.caption)
-                Text(text = incident.longitude, style = typography.caption)
+                    Text(text = "Vehicles Involved: ${incident.vehiclesInvolved}", style = typography.body1)
+                    Text(text = "Way 1: ${incident.way1}", style = typography.body1)
+                    Text(text = "Way 2: ${incident.way2}", style = typography.body1)
+                    Text(text = "Location: (${incident.latitude}, ${incident.longitude})", style = typography.body1)
+                    Text(text = "# ${incident.incidentId}", style = typography.caption)
+                }
             }
-
         }
+
+
     }
 
 }

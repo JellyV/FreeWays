@@ -174,7 +174,12 @@ class ReportIncidentActivity : ComponentActivity() {
                                     longitude = inLongitude
                                     way1 = inWay1
                                     way2 = inWay2
-                                    vehiclesInvolved = 0
+
+                                    vehiclesInvolved = if(inVehiclesInvolved.toIntOrNull() != null){
+                                        inVehiclesInvolved.toInt()
+                                    }else{
+                                        0
+                                    }
 
                                 }
                                 viewModel.saveIncident(incidentInfo)
