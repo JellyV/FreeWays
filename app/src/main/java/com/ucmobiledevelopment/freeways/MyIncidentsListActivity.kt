@@ -112,7 +112,8 @@ class MyIncidentsListActivity : ComponentActivity() {
                         .weight(8f)
                 ) {
                     Text(text = "${incident.cityName}, ${incident.stateName}", style = typography.h6)
-                    Text(text = "${incident.countyName} county", style = typography.h6)
+                    Text(text = "${incident.dateReported}", style = typography.h6)
+                    Text(text = "County: ${incident.countyName}", style = typography.body1)
                     Text(text = "Vehicles Involved: ${incident.vehiclesInvolved}", style = typography.body1)
                     Text(text = "Way 1: ${incident.way1}", style = typography.body1)
                     Text(text = "Way 2: ${incident.way2}", style = typography.body1)

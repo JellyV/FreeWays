@@ -163,6 +163,8 @@ class ReportIncidentActivity : ComponentActivity() {
                     Row() {
                         Button(
                             onClick = {
+
+                                val sdf = SimpleDateFormat("MM-dd-yyyy' 'HH:mm:ss")
                                 var incidentInfo = Incident().apply {
 
                                     stateId =  0
@@ -174,14 +176,15 @@ class ReportIncidentActivity : ComponentActivity() {
                                     longitude = inLongitude
                                     way1 = inWay1
                                     way2 = inWay2
-
                                     vehiclesInvolved = if(inVehiclesInvolved.toIntOrNull() != null){
                                         inVehiclesInvolved.toInt()
                                     }else{
                                         0
                                     }
+                                    dateReported = sdf.format(Calendar.getInstance().time)
 
                                 }
+
                                 viewModel.saveIncident(incidentInfo)
                                 Toast.makeText(
                                     context,
