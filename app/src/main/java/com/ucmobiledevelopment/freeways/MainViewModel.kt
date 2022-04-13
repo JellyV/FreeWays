@@ -3,11 +3,14 @@ package com.ucmobiledevelopment.freeways
 import android.content.ContentValues.TAG
 import android.net.Uri
 import android.util.Log
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
+import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.storage.FirebaseStorage
 import com.ucmobiledevelopment.freeways.dto.Incident
 import com.ucmobiledevelopment.freeways.dto.Photo
@@ -21,7 +24,7 @@ class MainViewModel(var incidentService : IIncidentService = IncidentService()) 
     private val NEW_INCIDENT = "New Incident"
     var incidents : MutableLiveData<List<Incident>> = MutableLiveData<List<Incident>>()
     var user : User? = null
-
+    val eventIncidents : MutableLiveData<List<Incident>> = MutableLiveData<List<Incident>>()
     private var firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
     private var storageReference = FirebaseStorage.getInstance().getReference()
 
@@ -131,6 +134,38 @@ class MainViewModel(var incidentService : IIncidentService = IncidentService()) 
             handle.addOnFailureListener {
                 Log.e(TAG, "Error updating photo data: ${it.message}")
             }
+        }
+    }
+
+    fun fetchMyIncidents() {
+        user?.let{
+            user ->
+            var myIncidentsCollection = firestore.collection("users").document(user.uid).collection("incidents")
+            var myIncidentsListener = myIncidentsCollection.addSnapshotListener {
+                querySnapshot, firebaseFirestoreException ->
+                querySnapshot?.let {
+                    querySnapshot ->
+                    var documents = querySnapshot.documents
+                    var inIncidents = ArrayList<Incident>()
+                    documents?.forEach {
+                        var incident = it.toObject(Incident::class.java)
+                        incident?.let{
+                            incident ->
+                            inIncidents.add(incident)
+                        }
+                    }
+                    eventIncidents.value = inIncidents
+                }
+            }
+        }
+
+    }
+
+    fun delete(incident: Incident) {
+        user?.let {
+            user ->
+            var myIncidentsCollection = firestore.collection("users").document(user.uid).collection("incidents")
+            myIncidentsCollection.document(incident.incidentId).delete()
         }
     }
 
