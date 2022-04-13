@@ -38,6 +38,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class MainActivity : ComponentActivity() {
 
     private val applicationViewModel : ApplicationViewModel by viewModel<ApplicationViewModel>()
+    private val mainViewModel : MainViewModel by viewModel<MainViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -90,6 +91,9 @@ class MainActivity : ComponentActivity() {
                 }
             }
             prepLocationUpdates()
+
+            //mainViewModel.deleteAllGovernmentIncidents()
+            mainViewModel.populateDatabaseWithGovernmentIncidents(2020, 2021, 39, 1)
         }
     }
 
