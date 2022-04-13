@@ -4,6 +4,7 @@ import android.content.ContentValues.TAG
 import android.net.Uri
 import android.util.Log
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -161,13 +162,50 @@ class MainViewModel(var incidentService : IIncidentService = IncidentService()) 
 
     }
 
-    fun delete(incident: Incident) {
+    fun deleteIncident(incident: Incident) {
         user?.let {
             user ->
             var myIncidentsCollection = firestore.collection("users").document(user.uid).collection("incidents")
             myIncidentsCollection.document(incident.incidentId).delete()
         }
     }
+
+    fun deleteAllGovernmentIncidents() {
+
+        var myIncidentsCollection = firestore.collection("users").document("government").collection("incidents")
+        var myIncidentsListener = myIncidentsCollection.addSnapshotListener {
+                querySnapshot, firebaseFirestoreException ->
+            querySnapshot?.let {
+                    querySnapshot ->
+                var documents = querySnapshot.documents
+                documents?.forEach {
+                    it.reference.delete()
+                }
+            }
+        }
+    }
+
+    fun populateDatabaseWithGovernmentIncidents(fromCaseYear: Int, toCaseYear: Int, state: Int, county: Int) {
+
+        viewModelScope.launch {
+            var allAPIIncidents = incidentService.fetchIncidents(fromCaseYear, toCaseYear, state, county)
+            var x = "fs"
+            allAPIIncidents?.forEach{
+
+                val document = firestore.collection("users").document("government").collection("incidents").document()
+                it.incidentId = document.id
+                val handle = document.set(it)
+                handle.addOnSuccessListener {
+                    Log.d("Firebase", "Document saved") }
+                handle.addOnFailureListener {
+                    Log.e("Firebase", "Save failed $it") }
+
+            }
+        }
+
+    }
+
+
 
 
 }
