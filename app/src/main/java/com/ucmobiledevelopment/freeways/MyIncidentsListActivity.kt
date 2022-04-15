@@ -163,7 +163,7 @@ class MyIncidentsListActivity : ComponentActivity() {
     }
 
     private fun delete(incident: Incident) {
-        viewModel.delete(incident)
+        viewModel.deleteIncident(incident)
     }
 
 }
