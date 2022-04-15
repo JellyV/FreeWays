@@ -348,7 +348,7 @@ class ReportIncidentActivity : ComponentActivity() {
             }
 
         } else {
-            Log.e("ReportIncident.kt", "Error logging in " + response?.error?.errorCode)
+            Log.e("ReportIncidentActivity.kt", "Error logging in " + response?.error?.errorCode)
         }
     }
 }

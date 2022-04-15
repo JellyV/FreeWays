@@ -1,5 +1,6 @@
 package com.ucmobiledevelopment.freeways
 
+import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.VectorDrawable
 import android.os.Bundle
@@ -128,7 +129,8 @@ class MyIncidentsListActivity : ComponentActivity() {
                     Button (
                         modifier = Modifier.padding(top = 5.dp),
                         onClick = {
-                            TODO("Open incident details page (intent)")
+                            val intent2 = Intent(context, ReportIncidentActivity::class.java)
+                                context.startActivity(intent2)
                         }
                     ) {
                         Icon(
@@ -163,7 +165,7 @@ class MyIncidentsListActivity : ComponentActivity() {
     }
 
     private fun delete(incident: Incident) {
-        viewModel.delete(incident)
+        viewModel.deleteIncident(incident)
     }
 
 }
