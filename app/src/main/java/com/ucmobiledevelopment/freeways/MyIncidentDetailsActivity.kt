@@ -6,41 +6,30 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
-import androidx.compose.material.MaterialTheme.typography
+import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.ucmobiledevelopment.freeways.dto.Incident
 import com.ucmobiledevelopment.freeways.dto.User
 import com.ucmobiledevelopment.freeways.ui.theme.FreeWaysTheme
-import org.koin.androidx.viewmodel.ext.android.viewModel
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.SnackbarDefaults.backgroundColor
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.Menu
-import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
-
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
-import com.ucmobiledevelopment.freeways.ui.theme.Purple500
 import java.util.*
 import kotlin.collections.ArrayList
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MyIncidentDetailsActivity : ComponentActivity() {
-
     private var firebaseUser: FirebaseUser? = FirebaseAuth.getInstance().currentUser
     private val viewModel : MainViewModel by viewModel<MainViewModel>()
     //private var selectedIncident by mutableStateOf(incidents())
+    private var myExampleIncident = Incident()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,8 +41,23 @@ class MyIncidentDetailsActivity : ComponentActivity() {
                 viewModel.listenToIncidents()
             }
 
+            val selectedIncidentId = intent.getStringExtra("selectedIncidentId")
+            selectedIncidentId?.let {
+                viewModel.fetchMyIncident(incidentId = selectedIncidentId)
+            }
+
             viewModel.fetchMyIncidents()
+
+
+
+
             val incidents by viewModel.incidents.observeAsState(initial = emptyList())
+            myExampleIncident.apply {
+                incidentId = "stuff"
+                stateName = "Nebraska"
+                cityName = "Omaha"
+
+            }
             FreeWaysTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
@@ -73,14 +77,18 @@ class MyIncidentDetailsActivity : ComponentActivity() {
 
     @Composable
     fun IncidentInfo(name: String, incidents : List<Incident> = ArrayList<Incident>()) {
-        var inStateName by remember { mutableStateOf("") }
-        var inCountyName by remember { mutableStateOf("") }
-        var inCityName by remember { mutableStateOf("") }
-        var inLatitude by remember { mutableStateOf("") }
-        var inLongitude by remember { mutableStateOf("") }
-        var inWay1 by remember { mutableStateOf("") }
-        var inWay2 by remember { mutableStateOf("") }
-        var inVehiclesInvolved by remember { mutableStateOf("") }
+
+        val myIncidents11 by viewModel.eventIncidents.observeAsState(initial = emptyList())
+        val mySelectedIncident by viewModel.mySelectedIncident.observeAsState(initial = Incident())
+
+        var inStateName by remember { mutableStateOf(myExampleIncident.stateName) }
+        var inCountyName by remember { mutableStateOf("RandomDAta") }
+        var inCityName by remember { mutableStateOf(myExampleIncident.cityName) }
+        var inLatitude by remember { mutableStateOf("RandomDAta") }
+        var inLongitude by remember { mutableStateOf("Randomument DAta") }
+        var inWay1 by remember { mutableStateOf("Somethingelse") }
+        var inWay2 by remember { mutableStateOf("RandomDAta") }
+        var inVehiclesInvolved by remember { mutableStateOf("10") }
         val context = LocalContext.current
 
         Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
@@ -135,7 +143,7 @@ class MyIncidentDetailsActivity : ComponentActivity() {
                 )
                 Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center)
                 {
-                    Row() {
+                    Row {
                         Button(
                             onClick = {
 
@@ -180,7 +188,4 @@ class MyIncidentDetailsActivity : ComponentActivity() {
 
         }
     }
-
-
-
 }

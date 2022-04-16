@@ -129,8 +129,9 @@ class MyIncidentsListActivity : ComponentActivity() {
                     Button (
                         modifier = Modifier.padding(top = 5.dp),
                         onClick = {
-                            val intent2 = Intent(context, ReportIncidentActivity::class.java)
-                                context.startActivity(intent2)
+                            val intent = Intent(context, MyIncidentDetailsActivity::class.java)
+                            intent.putExtra("selectedIncidentId", incident.incidentId)
+                            context.startActivity(intent)
                         }
                     ) {
                         Icon(

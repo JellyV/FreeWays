@@ -17,7 +17,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FreeWays">
         <activity
-            android:name=".MyIncidentsListActivity" />
+            android:name=".MyIncidentDetailsActivity"
+            android:exported="false"
+            android:label="@string/title_activity_my_incident_details"
+            android:theme="@style/Theme.FreeWays" />
+        <activity android:name=".MyIncidentsListActivity" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
