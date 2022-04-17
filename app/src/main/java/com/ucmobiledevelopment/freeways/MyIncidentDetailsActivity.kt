@@ -46,10 +46,7 @@ class MyIncidentDetailsActivity : ComponentActivity() {
                 viewModel.fetchMyIncident(incidentId = selectedIncidentId)
             }
 
-            viewModel.fetchMyIncidents()
-
-
-
+            //viewModel.fetchMyIncidents()
 
             val incidents by viewModel.incidents.observeAsState(initial = emptyList())
             myExampleIncident.apply {

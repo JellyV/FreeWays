@@ -22,7 +22,7 @@ import kotlinx.coroutines.launch
 
 class MainViewModel(var incidentService : IIncidentService = IncidentService()) : ViewModel(){
     val photos: ArrayList<Photo> = ArrayList<Photo>()
-    private val NEW_INCIDENT = "New Incident"
+    internal val NEW_INCIDENT = "New Incident"
     var incidents : MutableLiveData<List<Incident>> = MutableLiveData<List<Incident>>()
     var user : User? = null
     val eventIncidents : MutableLiveData<List<Incident>> = MutableLiveData<List<Incident>>()
@@ -165,29 +165,27 @@ class MainViewModel(var incidentService : IIncidentService = IncidentService()) 
     }
 
     fun fetchMyIncident(incidentId: String) {
-        user?.let{
-                user ->
+        user?.let { user ->
 
-
-            var myIncidentfromFirebase = firestore.collection("users").document(user.uid).collection("incidents").document(incidentId)
-
-
-
-            myIncidentfromFirebase.get()
-                .addOnSuccessListener { document ->
-                    if (document != null) {
-                        Log.d(TAG, "DocumentSnapshot data: ${document.data}")
-                        mySelectedIncident.value = document.toObject(Incident::class.java)
-                    } else {
-                        Log.d(TAG, "No such document")
+            var myIncidentfromFirebase =
+                firestore.collection("users").document(user.uid).collection("incidents").document(incidentId)
+            var myIncidentListener = myIncidentfromFirebase.addSnapshotListener {
+                    querySnapshot, firebaseFirestoreException ->
+                    querySnapshot?.let { querySnapshot ->
+                        myIncidentfromFirebase.get()
+                            .addOnSuccessListener { document ->
+                                if (document != null) {
+                                    Log.d(TAG, "DocumentSnapshot data: ${document.data}")
+                                    mySelectedIncident.value = document.toObject(Incident::class.java)
+                                } else {
+                                    Log.d(TAG, "No such document")
+                                }
+                            }
+                            .addOnFailureListener { exception ->
+                                Log.d(TAG, "get failed with ", exception)
+                            }
                     }
                 }
-                .addOnFailureListener { exception ->
-                    Log.d(TAG, "get failed with ", exception)
-                }
-
-
-
         }
     }
 
