@@ -129,8 +129,11 @@ class MyIncidentsListActivity : ComponentActivity() {
                     Button (
                         modifier = Modifier.padding(top = 5.dp),
                         onClick = {
+//                            val intent = Intent(context, MyIncidentDetailsActivity::class.java)
+//                            intent.putExtra("selectedIncidentId", incident.incidentId)
+
                             val intent = Intent(context, MyIncidentDetailsActivity::class.java)
-                            intent.putExtra("selectedIncidentId", incident.incidentId)
+                            intent.putExtra("EXTRA_INCIDENT", incident)
                             context.startActivity(intent)
                         }
                     ) {

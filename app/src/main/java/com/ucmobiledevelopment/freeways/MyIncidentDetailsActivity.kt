@@ -41,7 +41,15 @@ class MyIncidentDetailsActivity : ComponentActivity() {
                 viewModel.listenToIncidents()
             }
 
+
+
+
             val selectedIncidentId = intent.getStringExtra("selectedIncidentId")
+
+
+            val myTestIncident = intent.getSerializableExtra("EXTRA_INCIDENT") as Incident
+
+
             selectedIncidentId?.let {
                 viewModel.fetchMyIncident(incidentId = selectedIncidentId)
             }
@@ -61,7 +69,7 @@ class MyIncidentDetailsActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background,
                 ) {
-                    IncidentInfo("Android", incidents)
+                    IncidentInfo("Android", myTestIncident)
                 }
 
 
@@ -73,14 +81,14 @@ class MyIncidentDetailsActivity : ComponentActivity() {
     }
 
     @Composable
-    fun IncidentInfo(name: String, incidents : List<Incident> = ArrayList<Incident>()) {
+    fun IncidentInfo(name: String, myTestIncident: Incident) {
 
         val myIncidents11 by viewModel.eventIncidents.observeAsState(initial = emptyList())
         val mySelectedIncident by viewModel.mySelectedIncident.observeAsState(initial = Incident())
 
-        var inStateName by remember { mutableStateOf(myExampleIncident.stateName) }
-        var inCountyName by remember { mutableStateOf("RandomDAta") }
-        var inCityName by remember { mutableStateOf(myExampleIncident.cityName) }
+        var inStateName by remember { mutableStateOf(myTestIncident.stateName) }
+        var inCountyName by remember { mutableStateOf(myTestIncident.countyName) }
+        var inCityName by remember { mutableStateOf(myTestIncident.cityName) }
         var inLatitude by remember { mutableStateOf("RandomDAta") }
         var inLongitude by remember { mutableStateOf("Randomument DAta") }
         var inWay1 by remember { mutableStateOf("Somethingelse") }
@@ -146,7 +154,7 @@ class MyIncidentDetailsActivity : ComponentActivity() {
 
                                 val sdf = SimpleDateFormat("MM-dd-yyyy' 'HH:mm:ss")
                                 var incidentInfo = Incident().apply {
-
+                                    incidentId = myTestIncident.incidentId
                                     stateId =  0
                                     stateName = inStateName
                                     countyId = 0
