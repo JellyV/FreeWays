@@ -27,9 +27,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class MyIncidentDetailsActivity : ComponentActivity() {
     private var firebaseUser: FirebaseUser? = FirebaseAuth.getInstance().currentUser
     private val viewModel : MainViewModel by viewModel<MainViewModel>()
-    //private var selectedIncident by mutableStateOf(incidents())
-    private var myExampleIncident = Incident()
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,59 +38,30 @@ class MyIncidentDetailsActivity : ComponentActivity() {
                 viewModel.listenToIncidents()
             }
 
-
-
-
-            val selectedIncidentId = intent.getStringExtra("selectedIncidentId")
-
-
-            val myTestIncident = intent.getSerializableExtra("EXTRA_INCIDENT") as Incident
-
-
-            selectedIncidentId?.let {
-                viewModel.fetchMyIncident(incidentId = selectedIncidentId)
-            }
-
-            //viewModel.fetchMyIncidents()
-
-            val incidents by viewModel.incidents.observeAsState(initial = emptyList())
-            myExampleIncident.apply {
-                incidentId = "stuff"
-                stateName = "Nebraska"
-                cityName = "Omaha"
-
-            }
+            val selectedIncident = intent.getSerializableExtra("EXTRA_INCIDENT") as Incident
             FreeWaysTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background,
                 ) {
-                    IncidentInfo("Android", myTestIncident)
+                    IncidentInfo("Android", selectedIncident)
                 }
-
-
-
             }
-
         }
-
     }
 
     @Composable
-    fun IncidentInfo(name: String, myTestIncident: Incident) {
+    fun IncidentInfo(name: String, selectedIncident: Incident) {
 
-        val myIncidents11 by viewModel.eventIncidents.observeAsState(initial = emptyList())
-        val mySelectedIncident by viewModel.mySelectedIncident.observeAsState(initial = Incident())
-
-        var inStateName by remember { mutableStateOf(myTestIncident.stateName) }
-        var inCountyName by remember { mutableStateOf(myTestIncident.countyName) }
-        var inCityName by remember { mutableStateOf(myTestIncident.cityName) }
-        var inLatitude by remember { mutableStateOf("RandomDAta") }
-        var inLongitude by remember { mutableStateOf("Randomument DAta") }
-        var inWay1 by remember { mutableStateOf("Somethingelse") }
-        var inWay2 by remember { mutableStateOf("RandomDAta") }
-        var inVehiclesInvolved by remember { mutableStateOf("10") }
+        var inStateName by remember { mutableStateOf(selectedIncident.stateName) }
+        var inCountyName by remember { mutableStateOf(selectedIncident.countyName) }
+        var inCityName by remember { mutableStateOf(selectedIncident.cityName) }
+        var inLatitude by remember { mutableStateOf(selectedIncident.latitude) }
+        var inLongitude by remember { mutableStateOf(selectedIncident.longitude) }
+        var inWay1 by remember { mutableStateOf(selectedIncident.way1) }
+        var inWay2 by remember { mutableStateOf(selectedIncident.way2) }
+        var inVehiclesInvolved by remember { mutableStateOf(selectedIncident.vehiclesInvolved.toString()) }
         val context = LocalContext.current
 
         Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
@@ -154,7 +122,7 @@ class MyIncidentDetailsActivity : ComponentActivity() {
 
                                 val sdf = SimpleDateFormat("MM-dd-yyyy' 'HH:mm:ss")
                                 var incidentInfo = Incident().apply {
-                                    incidentId = myTestIncident.incidentId
+                                    incidentId = selectedIncident.incidentId
                                     stateId =  0
                                     stateName = inStateName
                                     countyId = 0
@@ -170,9 +138,7 @@ class MyIncidentDetailsActivity : ComponentActivity() {
                                         0
                                     }
                                     dateReported = sdf.format(Calendar.getInstance().time)
-
                                 }
-
                                 viewModel.saveIncident(incidentInfo)
                                 Toast.makeText(
                                     context,
@@ -181,16 +147,12 @@ class MyIncidentDetailsActivity : ComponentActivity() {
                                 ).show()
                             }
                         )
-
                         {
                             Text(text = "Save")
                         }
-
                     }
                 }
-
             }
-
         }
     }
 }

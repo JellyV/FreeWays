@@ -164,30 +164,6 @@ class MainViewModel(var incidentService : IIncidentService = IncidentService()) 
 
     }
 
-    fun fetchMyIncident(incidentId: String) {
-        user?.let { user ->
-
-            var myIncidentfromFirebase =
-                firestore.collection("users").document(user.uid).collection("incidents").document(incidentId)
-            var myIncidentListener = myIncidentfromFirebase.addSnapshotListener {
-                    querySnapshot, firebaseFirestoreException ->
-                    querySnapshot?.let { querySnapshot ->
-                        myIncidentfromFirebase.get()
-                            .addOnSuccessListener { document ->
-                                if (document != null) {
-                                    Log.d(TAG, "DocumentSnapshot data: ${document.data}")
-                                    mySelectedIncident.value = document.toObject(Incident::class.java)
-                                } else {
-                                    Log.d(TAG, "No such document")
-                                }
-                            }
-                            .addOnFailureListener { exception ->
-                                Log.d(TAG, "get failed with ", exception)
-                            }
-                    }
-                }
-        }
-    }
 
     fun deleteIncident(incident: Incident) {
         user?.let {
