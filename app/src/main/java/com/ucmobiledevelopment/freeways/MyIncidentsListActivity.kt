@@ -1,8 +1,6 @@
 package com.ucmobiledevelopment.freeways
 
 import android.content.Intent
-import android.graphics.drawable.Drawable
-import android.graphics.drawable.VectorDrawable
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -15,7 +13,6 @@ import androidx.compose.material.MaterialTheme.typography
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.google.firebase.auth.FirebaseAuth
@@ -30,7 +27,6 @@ import androidx.compose.material.SnackbarDefaults.backgroundColor
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Menu
-
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import com.ucmobiledevelopment.freeways.ui.theme.Purple500
@@ -42,9 +38,7 @@ class MyIncidentsListActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContent{
-
             firebaseUser?.let {
                 val user = User(it.uid, "")
                 viewModel.user = user
@@ -52,7 +46,6 @@ class MyIncidentsListActivity : ComponentActivity() {
             }
 
             viewModel.fetchMyIncidents()
-
             FreeWaysTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
@@ -61,13 +54,8 @@ class MyIncidentsListActivity : ComponentActivity() {
                 ) {
                     IncidentsList()
                 }
-
-
-
             }
-
         }
-
     }
 
     @Composable
@@ -89,7 +77,6 @@ class MyIncidentsListActivity : ComponentActivity() {
                 }
             )
         }
-
     }
 
     @Composable
@@ -106,7 +93,6 @@ class MyIncidentsListActivity : ComponentActivity() {
             border = BorderStroke(1.dp, Purple500)
         ){
             Row{
-
                 Column(
                     modifier = Modifier
                         .padding(horizontal = 10.dp, vertical = 5.dp)
@@ -121,8 +107,6 @@ class MyIncidentsListActivity : ComponentActivity() {
                     Text(text = "Location: (${incident.latitude}, ${incident.longitude})", style = typography.body1)
                     Text(text = "# ${incident.incidentId}", style = typography.caption)
                 }
-
-
                 Column(
                     Modifier.weight(2f)
                 ){
@@ -140,7 +124,6 @@ class MyIncidentsListActivity : ComponentActivity() {
                             modifier = Modifier.padding(end = 5.dp)
                         )
                     }
-
                     Button (
                         modifier = Modifier.padding(top = 10.dp),
                         onClick = {
@@ -155,18 +138,14 @@ class MyIncidentsListActivity : ComponentActivity() {
                         Icon(
                             imageVector = Icons.Filled.Delete,
                             contentDescription = "Delete",
-
                         )
                     }
                 }
             }
         }
-
-
     }
 
     private fun delete(incident: Incident) {
         viewModel.deleteIncident(incident)
     }
-
 }

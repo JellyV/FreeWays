@@ -49,7 +49,6 @@ open class ReportIncidentActivity : ComponentActivity() {
     private var uri: Uri? = null
     private lateinit var currentImagePath: String
     private var firebaseUser: FirebaseUser? = FirebaseAuth.getInstance().currentUser
-    private var selectedIncident: Incident? = null
     private val viewModel : MainViewModel by viewModel<MainViewModel>()
     private var strUri by mutableStateOf("")
 
@@ -61,7 +60,6 @@ open class ReportIncidentActivity : ComponentActivity() {
                 viewModel.user = user
                 viewModel.listenToIncidents()
             }
-
             viewModel.fetchIncidents(2019, 2020, 40, 1)
             val incidents by viewModel.incidents.observeAsState(initial = emptyList())
             FreeWaysTheme {
@@ -214,16 +212,15 @@ open class ReportIncidentActivity : ComponentActivity() {
                             Text(text = "Photo")
                         }
                     }
-                    AsyncImage(model = strUri,
-                        contentDescription= "Incident Image",
-                        Modifier
-                            .width(74.dp)
-                            .height(74.dp)
-                        )
+
                 }
-
+                AsyncImage(model = strUri,
+                    contentDescription= "Incident Image",
+                    Modifier
+                        .width(474.dp)
+                        .height(474.dp)
+                )
             }
-
         }
     }
 
@@ -302,15 +299,10 @@ open class ReportIncidentActivity : ComponentActivity() {
     private fun hasCameraPermission() = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
     private fun hasExternalStoragePermission() = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
 
-
-
-
-
     @Composable
     fun Greeting(name: String) {
         Text(text = "Hello $name!")
     }
-
 
     @Preview(showBackground = true)
     @Composable
@@ -324,15 +316,12 @@ open class ReportIncidentActivity : ComponentActivity() {
         val providers = arrayListOf(
             AuthUI.IdpConfig.EmailBuilder().build(),
             AuthUI.IdpConfig.GoogleBuilder().build()
-
         )
         val signInIntent = AuthUI.getInstance()
             .createSignInIntentBuilder()
             .setAvailableProviders(providers)
             .build()
-
         signInLauncher.launch(signInIntent)
-
     }
 
     private val signInLauncher = registerForActivityResult(
@@ -350,9 +339,7 @@ open class ReportIncidentActivity : ComponentActivity() {
                 viewModel.user = user
                 viewModel.saveUser()
                 viewModel.listenToIncidents()
-
             }
-
         } else {
             Log.e("ReportIncidentActivity.kt", "Error logging in " + response?.error?.errorCode)
         }

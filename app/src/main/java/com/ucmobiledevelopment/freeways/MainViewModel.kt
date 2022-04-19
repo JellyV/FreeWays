@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -24,12 +25,13 @@ class MainViewModel(var incidentService : IIncidentService = IncidentService()) 
     val photos: ArrayList<Photo> = ArrayList<Photo>()
     internal val NEW_INCIDENT = "New Incident"
     var incidents : MutableLiveData<List<Incident>> = MutableLiveData<List<Incident>>()
+    //private var selectedIncident by mutableStateOf(Incident())
     var user : User? = null
     val eventIncidents : MutableLiveData<List<Incident>> = MutableLiveData<List<Incident>>()
+    val eventPhotos : MutableLiveData<List<Photo>> = MutableLiveData<List<Photo>>()
     private var firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
     private var storageReference = FirebaseStorage.getInstance().getReference()
 
-    val mySelectedIncident : MutableLiveData<Incident> = MutableLiveData<Incident>()
 
     init{
         firestore.firestoreSettings = FirebaseFirestoreSettings.Builder().build()
@@ -60,7 +62,6 @@ class MainViewModel(var incidentService : IIncidentService = IncidentService()) 
                 }
             }
         }
-
     }
 
     fun fetchIncidents(fromCaseYear: Int, toCaseYear: Int, state: Int, county: Int){
@@ -142,7 +143,7 @@ class MainViewModel(var incidentService : IIncidentService = IncidentService()) 
             }
         }
     }
-    fun fetchPhotos() {
+    fun fetchPhotos(incident: Incident) {
         user?.let {
                 user ->
             var photoCollection = firestore.collection("users").document(user.uid).collection("incidents").document(incident.incidentId).collection("photos")
@@ -164,7 +165,7 @@ class MainViewModel(var incidentService : IIncidentService = IncidentService()) 
         }
     }
 
-    fun delete(photo: Photo) {
+    fun delete(photo: Photo, incident: Incident) {
         user?.let {
                 user ->
             var photoCollection = firestore.collection("users").document(user.uid).collection("incidents").document(incident.incidentId).collection("photos")

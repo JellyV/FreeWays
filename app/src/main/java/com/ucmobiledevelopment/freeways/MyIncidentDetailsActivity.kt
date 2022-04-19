@@ -1,6 +1,5 @@
 package com.ucmobiledevelopment.freeways
 
-
 import android.Manifest
 import android.content.ContentValues
 import android.content.pm.PackageManager
@@ -28,7 +27,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
@@ -40,7 +38,6 @@ import com.ucmobiledevelopment.freeways.dto.Photo
 import com.ucmobiledevelopment.freeways.dto.User
 import com.ucmobiledevelopment.freeways.ui.theme.FreeWaysTheme
 import java.util.*
-import kotlin.collections.ArrayList
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
 import androidx.compose.foundation.lazy.items
@@ -52,6 +49,7 @@ class MyIncidentDetailsActivity : ComponentActivity() {
     private lateinit var currentImagePath: String
     private var strUri by mutableStateOf("")
     private val viewModel : MainViewModel by viewModel<MainViewModel>()
+    private lateinit var selectedIncident : Incident()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,9 +60,8 @@ class MyIncidentDetailsActivity : ComponentActivity() {
                 viewModel.user = user
                 viewModel.listenToIncidents()
             }
-
-            val selectedIncident = intent.getSerializableExtra("EXTRA_INCIDENT") as Incident
-            viewModel.fetchPhotos()
+            selectedIncident = intent.getSerializableExtra("EXTRA_INCIDENT") as Incident
+            viewModel.fetchPhotos(selectedIncident)
             FreeWaysTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
@@ -79,7 +76,6 @@ class MyIncidentDetailsActivity : ComponentActivity() {
 
     @Composable
     fun IncidentInfo(name: String, selectedIncident: Incident) {
-
         var inStateName by remember { mutableStateOf(selectedIncident.stateName) }
         var inCountyName by remember { mutableStateOf(selectedIncident.countyName) }
         var inCityName by remember { mutableStateOf(selectedIncident.cityName) }
@@ -145,7 +141,6 @@ class MyIncidentDetailsActivity : ComponentActivity() {
                     Row {
                         Button(
                             onClick = {
-
                                 val sdf = SimpleDateFormat("MM-dd-yyyy' 'HH:mm:ss")
                                 var incidentInfo = Incident().apply {
                                     incidentId = selectedIncident.incidentId
@@ -185,6 +180,7 @@ class MyIncidentDetailsActivity : ComponentActivity() {
                         }
                     }
                 }
+                PhotoEvents()
             }
         }
     }
@@ -270,12 +266,11 @@ class MyIncidentDetailsActivity : ComponentActivity() {
     }
 
     private fun save(photo: Photo) {
-        viewModel.updatePhotoDatabase(photo)
+        viewModel.updatePhotoDatabase(photo = photo, incident = selectedIncident)
     }
     private fun delete(photo: Photo) {
-        viewModel.delete(photo)
+        viewModel.delete(photo = photo, incident = selectedIncident)
     }
-
 
     private fun takePhoto() {
         if (hasCameraPermission() == PackageManager.PERMISSION_GRANTED && hasExternalStoragePermission() == PackageManager.PERMISSION_GRANTED){
@@ -348,10 +343,6 @@ class MyIncidentDetailsActivity : ComponentActivity() {
             Log.e(ContentValues.TAG, "Image not saved. $uri")
         }
     }
-
     private fun hasCameraPermission() = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
     private fun hasExternalStoragePermission() = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-
-
-
 }
