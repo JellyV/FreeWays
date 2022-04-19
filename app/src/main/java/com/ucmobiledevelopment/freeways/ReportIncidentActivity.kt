@@ -28,6 +28,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import coil.compose.AsyncImage
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
@@ -43,7 +44,7 @@ import java.io.File
 import java.util.*
 import kotlin.collections.ArrayList
 
-class ReportIncidentActivity : ComponentActivity() {
+open class ReportIncidentActivity : ComponentActivity() {
 
     private var uri: Uri? = null
     private lateinit var currentImagePath: String
@@ -213,7 +214,12 @@ class ReportIncidentActivity : ComponentActivity() {
                             Text(text = "Photo")
                         }
                     }
-                    //TO DO: Add a button to display the image          //AsyncImage(model = strUri, contentDescription= "Incident Image")
+                    AsyncImage(model = strUri,
+                        contentDescription= "Incident Image",
+                        Modifier
+                            .width(74.dp)
+                            .height(74.dp)
+                        )
                 }
 
             }
@@ -221,7 +227,7 @@ class ReportIncidentActivity : ComponentActivity() {
         }
     }
 
-    private fun takePhoto() {
+    fun takePhoto() {
         if (hasCameraPermission() == PackageManager.PERMISSION_GRANTED && hasExternalStoragePermission() == PackageManager.PERMISSION_GRANTED){
             // User has already granted permission for these activities. Toggle the camera!
             invokeCamera()

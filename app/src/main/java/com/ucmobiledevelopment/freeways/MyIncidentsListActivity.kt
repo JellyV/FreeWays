@@ -85,7 +85,7 @@ class MyIncidentsListActivity : ComponentActivity() {
             items (
                 items = myIncidents,
                 itemContent = {
-                    EventListItem(incident = it)
+                    EventIncidentListItem(incident = it)
                 }
             )
         }
@@ -93,7 +93,7 @@ class MyIncidentsListActivity : ComponentActivity() {
     }
 
     @Composable
-    fun EventListItem(incident: Incident){
+    fun EventIncidentListItem(incident: Incident){
         val context = LocalContext.current
         Card(
             modifier = Modifier
@@ -129,9 +129,6 @@ class MyIncidentsListActivity : ComponentActivity() {
                     Button (
                         modifier = Modifier.padding(top = 5.dp),
                         onClick = {
-//                            val intent = Intent(context, MyIncidentDetailsActivity::class.java)
-//                            intent.putExtra("selectedIncidentId", incident.incidentId)
-
                             val intent = Intent(context, MyIncidentDetailsActivity::class.java)
                             intent.putExtra("EXTRA_INCIDENT", incident)
                             context.startActivity(intent)
