@@ -22,12 +22,14 @@ import kotlinx.coroutines.launch
 
 class MainViewModel(var incidentService : IIncidentService = IncidentService()) : ViewModel(){
     val photos: ArrayList<Photo> = ArrayList<Photo>()
-    private val NEW_INCIDENT = "New Incident"
+    internal val NEW_INCIDENT = "New Incident"
     var incidents : MutableLiveData<List<Incident>> = MutableLiveData<List<Incident>>()
     var user : User? = null
     val eventIncidents : MutableLiveData<List<Incident>> = MutableLiveData<List<Incident>>()
     private var firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
     private var storageReference = FirebaseStorage.getInstance().getReference()
+
+    val mySelectedIncident : MutableLiveData<Incident> = MutableLiveData<Incident>()
 
     init{
         firestore.firestoreSettings = FirebaseFirestoreSettings.Builder().build()
@@ -161,6 +163,7 @@ class MainViewModel(var incidentService : IIncidentService = IncidentService()) 
         }
 
     }
+
 
     fun deleteIncident(incident: Incident) {
         user?.let {

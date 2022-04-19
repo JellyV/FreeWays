@@ -1,5 +1,6 @@
 package com.ucmobiledevelopment.freeways
 
+import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.VectorDrawable
 import android.os.Bundle
@@ -128,7 +129,12 @@ class MyIncidentsListActivity : ComponentActivity() {
                     Button (
                         modifier = Modifier.padding(top = 5.dp),
                         onClick = {
-                            TODO("Open incident details page (intent)")
+//                            val intent = Intent(context, MyIncidentDetailsActivity::class.java)
+//                            intent.putExtra("selectedIncidentId", incident.incidentId)
+
+                            val intent = Intent(context, MyIncidentDetailsActivity::class.java)
+                            intent.putExtra("EXTRA_INCIDENT", incident)
+                            context.startActivity(intent)
                         }
                     ) {
                         Icon(

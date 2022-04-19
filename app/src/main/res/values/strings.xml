@@ -9,4 +9,6 @@
     <string name="way2">way2</string>
     <string name="vehiclesInvolved">vehiclesInvolved</string>
     <string name="cameraPermissionDenied">Unable to load camera without permission.</string>
+    <string name="title_activity_my_details_main2">MyDetailsMainActivity2</string>
+    <string name="title_activity_my_incident_details">MyIncidentDetailsActivity</string>
 </resources>
