@@ -44,6 +44,9 @@ import java.io.File
 import java.util.*
 import kotlin.collections.ArrayList
 
+/**
+ * This activity is used by user to report a new Incident.
+ */
 open class ReportIncidentActivity : ComponentActivity() {
 
     private var uri: Uri? = null

@@ -43,6 +43,9 @@ import java.io.File
 import androidx.compose.foundation.lazy.items
 import com.ucmobiledevelopment.freeways.ui.theme.Purple500
 
+/**
+ * This activity lists all incidents reported by the user.
+ */
 class MyIncidentDetailsActivity : ComponentActivity() {
     private var firebaseUser: FirebaseUser? = FirebaseAuth.getInstance().currentUser
     private var uri: Uri? = null

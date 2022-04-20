@@ -1,5 +1,8 @@
 package com.ucmobiledevelopment.freeways.dto
 
+/**
+ * Only used for JSON parsing.
+ */
 data class IncidentDTO(
     val CITY: String? = "",
     val CITYNAME: String? = "",

@@ -31,6 +31,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import com.ucmobiledevelopment.freeways.ui.theme.Purple500
 
+/**
+ * Main activity where users can see the incidents on the map, as well as navigate to other activities.
+ */
 class MyIncidentsListActivity : ComponentActivity() {
 
     private var firebaseUser: FirebaseUser? = FirebaseAuth.getInstance().currentUser
