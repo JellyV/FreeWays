@@ -10,14 +10,10 @@ import kotlinx.coroutines.withContext
 import retrofit2.awaitResponse
 import java.lang.Exception
 
-
 interface IIncidentService {
     suspend fun fetchIncidents(fromCaseYear: Int, toCaseYear: Int, state: Int, county: Int) : List<Incident>?
 }
-
 class IncidentService : IIncidentService {
-
-
 
     override suspend fun fetchIncidents(fromCaseYear: Int, toCaseYear: Int, state: Int, county: Int) : List<Incident>? {
 
@@ -54,10 +50,5 @@ class IncidentService : IIncidentService {
 
             return@withContext incidentList
         }
-
-
-
-
     }
-
 }

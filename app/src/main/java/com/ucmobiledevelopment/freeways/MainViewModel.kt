@@ -3,15 +3,11 @@ package com.ucmobiledevelopment.freeways
 import android.content.ContentValues.TAG
 import android.net.Uri
 import android.util.Log
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
-import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.storage.FirebaseStorage
 import com.ucmobiledevelopment.freeways.dto.Incident
 import com.ucmobiledevelopment.freeways.dto.Photo
@@ -26,10 +22,10 @@ class MainViewModel(var incidentService : IIncidentService = IncidentService()) 
     var incidents : MutableLiveData<List<Incident>> = MutableLiveData<List<Incident>>()
     var user : User? = null
     val eventIncidents : MutableLiveData<List<Incident>> = MutableLiveData<List<Incident>>()
+    val eventPhotos : MutableLiveData<List<Photo>> = MutableLiveData<List<Photo>>()
     private var firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
     private var storageReference = FirebaseStorage.getInstance().getReference()
 
-    val mySelectedIncident : MutableLiveData<Incident> = MutableLiveData<Incident>()
 
     init{
         firestore.firestoreSettings = FirebaseFirestoreSettings.Builder().build()
@@ -60,7 +56,6 @@ class MainViewModel(var incidentService : IIncidentService = IncidentService()) 
                 }
             }
         }
-
     }
 
     fun fetchIncidents(fromCaseYear: Int, toCaseYear: Int, state: Int, county: Int){
@@ -123,20 +118,60 @@ class MainViewModel(var incidentService : IIncidentService = IncidentService()) 
         }
     }
 
-    // TO DO: We will add this after the incident update functionality is created
-    fun updatePhotoDatabase(photo: Photo, incident: Incident) {
+    internal fun updatePhotoDatabase(photo: Photo, incident: Incident) {
         user?.let {
-            user ->
-            var photoCollection = firestore.collection("users").document(user.uid).collection("incidents").document(incident.incidentId).collection("photos")
-            var handle = photoCollection.add(photo)
+                user ->
+            var photoDocument = if (photo.id.isEmpty()) {
+                firestore.collection("users").document(user.uid).collection("incidents").document(incident.incidentId).collection("photos").document()
+            } else {
+                firestore.collection("users").document(user.uid).collection("incidents").document(incident.incidentId).collection("photos").document(photo.id)
+            }
+            photo.id = photoDocument.id
+            var handle = photoDocument.set(photo)
             handle.addOnSuccessListener {
                 Log.i(TAG, "Successfully updated photo metadata")
-                photo.id = it.id
-                firestore.collection("users").document(user.uid).collection("incidents").document(incident.incidentId).collection("photos").document(photo.id).set(photo)
             }
             handle.addOnFailureListener {
                 Log.e(TAG, "Error updating photo data: ${it.message}")
             }
+        }
+    }
+    fun fetchPhotos(incident: Incident) {
+        user?.let {
+                user ->
+            var photoCollection = firestore.collection("users").document(user.uid).collection("incidents").document(incident.incidentId).collection("photos")
+            var photosListener = photoCollection.addSnapshotListener {
+                    querySnapshot, firebaseFirestoreException ->
+                querySnapshot?.let {
+                        querySnapshot ->
+                    var documents = querySnapshot.documents
+                    var inPhotos = ArrayList<Photo>()
+                    documents?.forEach {
+                        var photo = it.toObject(Photo::class.java)
+                        photo?.let {
+                            inPhotos.add(it)
+                        }
+                    }
+                    eventPhotos.value = inPhotos
+                }
+            }
+        }
+    }
+
+    fun delete(photo: Photo, incident: Incident) {
+        user?.let {
+                user ->
+            var photoCollection = firestore.collection("users").document(user.uid).collection("incidents").document(incident.incidentId).collection("photos")
+            photoCollection.document(photo.id).delete()
+            val uri = Uri.parse(photo.localUri)
+            val imageRef = storageReference.child("images/${user.uid}/${uri.lastPathSegment}")
+            imageRef.delete()
+                .addOnSuccessListener {
+                    Log.i(TAG, "Photo binary file deleted ${photo}")
+                }
+                .addOnFailureListener {
+                    Log.e(TAG, "Photo delete failed.  ${it.message}")
+                }
         }
     }
 
@@ -205,10 +240,5 @@ class MainViewModel(var incidentService : IIncidentService = IncidentService()) 
 
             }
         }
-
     }
-
-
-
-
 }
