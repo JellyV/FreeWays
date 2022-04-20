@@ -49,7 +49,7 @@ class MyIncidentDetailsActivity : ComponentActivity() {
     private lateinit var currentImagePath: String
     private var strUri by mutableStateOf("")
     private val viewModel : MainViewModel by viewModel<MainViewModel>()
-    private lateinit var selectedIncident : Incident()
+    private var selectedIncident : Incident = Incident()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -218,8 +218,8 @@ class MyIncidentDetailsActivity : ComponentActivity() {
                         model = photo.localUri,
                         contentDescription = "Event Image",
                         Modifier
-                            .width(64.dp)
-                            .height(64.dp)
+                            .width(74.dp)
+                            .height(74.dp)
                     )
                 }
                 Column(Modifier.weight(4f)) {
@@ -235,7 +235,7 @@ class MyIncidentDetailsActivity : ComponentActivity() {
                         modifier = Modifier.fillMaxWidth()
                     )
                 }
-                Column(Modifier.weight(1f)) {
+                Column(Modifier.weight(2f)) {
 
                     Button(
                         onClick = {

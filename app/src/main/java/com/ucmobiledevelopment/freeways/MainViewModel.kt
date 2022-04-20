@@ -3,16 +3,11 @@ package com.ucmobiledevelopment.freeways
 import android.content.ContentValues.TAG
 import android.net.Uri
 import android.util.Log
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
-import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.storage.FirebaseStorage
 import com.ucmobiledevelopment.freeways.dto.Incident
 import com.ucmobiledevelopment.freeways.dto.Photo
@@ -25,7 +20,6 @@ class MainViewModel(var incidentService : IIncidentService = IncidentService()) 
     val photos: ArrayList<Photo> = ArrayList<Photo>()
     internal val NEW_INCIDENT = "New Incident"
     var incidents : MutableLiveData<List<Incident>> = MutableLiveData<List<Incident>>()
-    //private var selectedIncident by mutableStateOf(Incident())
     var user : User? = null
     val eventIncidents : MutableLiveData<List<Incident>> = MutableLiveData<List<Incident>>()
     val eventPhotos : MutableLiveData<List<Photo>> = MutableLiveData<List<Photo>>()
@@ -128,10 +122,9 @@ class MainViewModel(var incidentService : IIncidentService = IncidentService()) 
         user?.let {
                 user ->
             var photoDocument = if (photo.id.isEmpty()) {
-                firestore.collection("users").document(user.uid).collection("specimens").document(incident.incidentId).collection("photos").document()
+                firestore.collection("users").document(user.uid).collection("incidents").document(incident.incidentId).collection("photos").document()
             } else {
-                firestore.collection("users").document(user.uid).collection("specimens").document(incident.incidentId).collection("photos").document(photo.id)
-
+                firestore.collection("users").document(user.uid).collection("incidents").document(incident.incidentId).collection("photos").document(photo.id)
             }
             photo.id = photoDocument.id
             var handle = photoDocument.set(photo)
