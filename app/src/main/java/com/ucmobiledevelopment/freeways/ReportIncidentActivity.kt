@@ -75,7 +75,7 @@ open class ReportIncidentActivity : ComponentActivity() {
 
                 Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
                     Row(Modifier
-                        .padding(5.dp),
+                        .padding(10.dp),
                         horizontalArrangement = Arrangement.Center,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
@@ -108,7 +108,7 @@ open class ReportIncidentActivity : ComponentActivity() {
         val context = LocalContext.current
 
         Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-            Column {
+            Column(modifier = Modifier.padding(top = 60.dp)) {
                 OutlinedTextField(
                     value = inStateName,
                     onValueChange = { inStateName = it },

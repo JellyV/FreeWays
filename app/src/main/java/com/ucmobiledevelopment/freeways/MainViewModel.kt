@@ -227,7 +227,6 @@ class MainViewModel(var incidentService : IIncidentService = IncidentService()) 
 
         viewModelScope.launch {
             var allAPIIncidents = incidentService.fetchIncidents(fromCaseYear, toCaseYear, state, county)
-            var x = "fs"
             allAPIIncidents?.forEach{
 
                 val document = firestore.collection("users").document("government").collection("incidents").document()
